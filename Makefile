@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: obs5.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIH.base.pdf 
 
 ##################################################################
 
@@ -29,7 +29,14 @@ discrete_obs.Rout: discrete_sim.Rout discrete_obs.R
 obs5.Rout: obs%.Rout: i1000.Rout discrete_obs.Rout obs%.autobug obs.R
 	$(run-R)
 
-test.Rout: i1000.Rout
+%.scen.Rout: ~/git/techtex-ebola/Data/%/*confirmed*country*.csv scen.R
+	$(run-R)
+
+%.base.Rout: i5000.Rout NIH1.scen.Rout obs5.autobug base.R
+	$(run-R)
+
+NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
+	pdftk $^ cat output $@
 
 ######################################################################
 
