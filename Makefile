@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH.base.pdf 
+target pngtarget pdftarget vtarget acrtarget: OLD.base.output 
 
 ##################################################################
 
@@ -31,7 +31,10 @@ obs5.Rout: obs%.Rout: i1000.Rout discrete_obs.Rout obs%.autobug obs.R
 data = $(gitroot)/techtex-ebola/Data
 
 .PRECIOUS: %.scen.Rout
-%.scen.Rout: $(data)/%/*confirmed*country*.csv scen.R
+NIH%.scen.Rout: $(data)/NIH%/*confirmed*country*.csv scen.R
+	$(run-R)
+
+OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 	$(run-R)
 
 NIH1.base.Rout: base.R
@@ -42,6 +45,15 @@ NIH1.base.Rout: base.R
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@
+
+OLD.base.pdf: OLD1.base.Rout.pdf OLD2.base.Rout.pdf OLD3.base.Rout.pdf OLD4.base.Rout.pdf
+	pdftk $^ cat output $@
+
+OLD.base.output: OLD1.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base.Routput
+	cat $^ > $@
+
+OLD.projections.Rout: OLD1.base.Rout.envir OLD2.base.Rout.envir OLD3.base.Rout.envir OLD4.base.Rout.envir scenario_project.R
+	$(run-R)
 
 ######################################################################
 

@@ -35,4 +35,4 @@ sim <- jags(model.file=input_files[[1]],
 
 print(sim)
 plot(sim)
-traceplot(sim)
+# traceplot(sim)
