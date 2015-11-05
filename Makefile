@@ -3,10 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH1.base.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIH.base.pdf 
 
 ##################################################################
-
 
 # make files
 
@@ -29,29 +28,20 @@ discrete_obs.Rout: discrete_sim.Rout discrete_obs.R
 obs5.Rout: obs%.Rout: i1000.Rout discrete_obs.Rout obs%.autobug obs.R
 	$(run-R)
 
-%.scen.Rout: ~/git/techtex-ebola/Data/%/*confirmed*country*.csv scen.R
+data = $(gitroot)/techtex-ebola/Data
+
+.PRECIOUS: %.scen.Rout
+%.scen.Rout: $(data)/%/*confirmed*country*.csv scen.R
 	$(run-R)
 
-%.base.Rout: i5000.Rout NIH1.scen.Rout obs5.autobug base.R
-	$(run-R)
+NIH1.base.Rout: base.R
 
-NIH1.base.Rout:
+.PRECIOUS: %.base.Rout
+%.base.Rout: i5000.Rout %.scen.Rout obs5.autobug base.R
+	$(run-R)
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@
-
-######################################################################
-
-### Crib
-
-crib = /home/dushoff/Dropbox/academicWW/Bugs_example/
-
-.PRECIOUS: %.pl %.R
-%.pl %.R:
-	$(ccrib)
-
-obs.bug: 
-	$(ccrib)
 
 ######################################################################
 
