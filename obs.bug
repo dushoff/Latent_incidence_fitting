@@ -1,0 +1,31 @@
+model{
+	for (j in 1:LAG){
+		p[j] <- 1/8
+	}
+
+	for (j in 1:LAG){
+		precases[j] ~ dcat(p[])
+		cases[j] <- precases[j] - 1
+	}
+
+	for (j in 1:max){
+		postcases[j] ~ dpois(foi[j])
+		obs[j] ~ dbin(reporting, postcases[j])
+	}
+	
+	for (j in 1:max){
+		cases[LAG+j] <- postcases[j]
+	}
+
+	LAGCHAIN
+	reporting ~ dbeta(0.1, 0.1)
+
+	for (j in 1:LAG){
+		ker[j] ~ dunif(0, 10)
+	}
+
+	TOT
+	GEN
+	gen <- (gtot/R0)
+
+}
