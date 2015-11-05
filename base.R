@@ -29,7 +29,7 @@ inits = list(inits1, inits2, inits3)
 
 sim <- jags(model.file=input_files[[1]],
 	data=data, inits=inits, 
-	parameters = c("ker", "R0", "gen", "reporting"),
+	parameters = c("ker", "R0", "gen", "reporting", "obs"),
 	n.chains = 3, n.iter = iterations
 )
 

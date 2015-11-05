@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH.base.pdf 
+target pngtarget pdftarget vtarget acrtarget: NIH1.base.Rout 
 
 ##################################################################
 
@@ -34,6 +34,8 @@ obs5.Rout: obs%.Rout: i1000.Rout discrete_obs.Rout obs%.autobug obs.R
 
 %.base.Rout: i5000.Rout NIH1.scen.Rout obs5.autobug base.R
 	$(run-R)
+
+NIH1.base.Rout:
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@
