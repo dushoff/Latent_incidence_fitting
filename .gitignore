@@ -1,3 +1,5 @@
+*.autobug
+
 commit.txt
 .*.sw*
 
