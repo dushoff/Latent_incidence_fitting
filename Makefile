@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: OLD.base.pdf 
+target pngtarget pdftarget vtarget acrtarget: OLD1.newbase.Rout 
 
 ##################################################################
 
@@ -32,6 +32,10 @@ Sources += $(wildcard *.bugtmp)
 obs%.autobug: obs.bugtmp flag.pl
 	$(PUSHSTAR)
 
+.PRECIOUS: newobs%.autobug
+newobs%.autobug: newobs.bugtmp flag.pl
+	$(PUSHSTAR)
+
 data = $(gitroot)/techtex-ebola/Data
 
 .PRECIOUS: %.scen.Rout
@@ -46,7 +50,13 @@ OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 
 # base.R is a pure Poisson, renewal equation machine. Seems to work pretty weel for what it does, but not extensively tested. CIs are very tight on real data. Reporting ratios rarely identifiable, which is as it should be.
 
-NIH1.base.Rout: base.R
+### Developing the base bug script
+
+### CURR
+OLD1.newbase.Rout: newobs5.bug newbase.R
+
+%.newbase.Rout: i5000.Rout %.scen.Rout newobs5.bug newbase.R
+	$(run-R)
 
 .PRECIOUS: %.base.Rout
 %.base.Rout: i5000.Rout %.scen.Rout obs5.autobug base.R
