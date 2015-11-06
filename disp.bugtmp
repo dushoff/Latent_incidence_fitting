@@ -1,0 +1,24 @@
+### gamma(shape, rate); rate = shape/mu
+model{
+	reporting ~ dbeta(0.1, 0.1)
+	# reportShape ~ dgamma(0.01, 0.01)
+	incShape ~  dgamma(0.01, 0.01)
+
+	for (j in 1:lag){
+		cases[j] ~ dnegbin(1/2, 1)
+		ker[j] ~ dunif(0, 10)
+		# _FOICHAIN_ is a magic word that's expanded in the autobug
+	}
+
+	for (j in 1:max){
+		caseRate[j] <- incShape/(FOICHAIN)
+		expCases[j] ~ dgamma(incShape, caseRate[j])
+		cases[lag+j] ~ dpois(expCases[j])
+		obs[j] ~ dbin(reporting, cases[lag+j])
+	}
+
+
+	R0 <- sum(ker)
+	gtot <- inprod(lagvec, ker)
+	gen <- (gtot/R0)
+}

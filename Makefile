@@ -32,9 +32,11 @@ Sources += $(wildcard *.bugtmp)
 base%.autobug: base.bugtmp flag.pl
 	$(PUSHSTAR)
 
-.PRECIOUS: newobs%.autobug
-newobs%.autobug: newobs.bugtmp flag.pl
+.PRECIOUS: disp%.autobug
+disp%.autobug: disp.bugtmp lagchain.pl
 	$(PUSHSTAR)
+
+disp5.autobug: disp.bugtmp lagchain.pl
 
 data = $(gitroot)/techtex-ebola/Data
 
@@ -50,14 +52,14 @@ OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 
 # base.R is a pure Poisson, renewal equation machine. Seems to work pretty weel for what it does, but not extensively tested. CIs are very tight on real data. Reporting ratios rarely identifiable, which is as it should be.
 
-### Developing the base bug script
-
-### CURR
-
 .PRECIOUS: %.base.Rout
 %.base.Rout: i5000.Rout %.scen.Rout base5.autobug base.R
 	$(run-R)
-OLD1.base.Rout: base5.autobug base.R
+
+%.disp.Rout: i5000.Rout %.scen.Rout disp5.autobug base.R
+	$(run-R)
+## CURR
+OLD1.disp.Rout: disp.bugtmp base.R
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@
