@@ -92,7 +92,5 @@ Makefile: start.makestuff
 -include $(ms)/git.mk
 -include $(ms)/visual.mk
 
-# -include $(ms)/wrapR.mk
-# -include $(ms)/oldlatex.mk
-include $(ms)/perl.def
-include $(ms)/wrapR.mk
+-include $(ms)/perl.def
+-include $(ms)/wrapR.mk
