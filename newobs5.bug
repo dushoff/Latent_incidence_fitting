@@ -1,34 +1,23 @@
 model{
-	for (j in 1:5){
-		p[j] <- 1/8
-	}
-
-	for (j in 1:5){
-		precases[j] ~ dcat(p[])
-		cases[j] <- precases[j] - 1
+	for (j in 1:lag){
+		cases[j] ~ dnegbin(1/2, 1)
+		ker[j] ~ dunif(0, 10)
 	}
 
 	for (j in 1:max){
-		postcases[j] ~ dpois(foi[j])
-		obs[j] ~ dbin(reporting, postcases[j])
-	}
-	
-	for (j in 1:max){
-		cases[5+j] <- postcases[j]
+		cases[lag+j] ~ dpois(foi[j])
+		obs[j] ~ dbin(reporting, cases[lag+j])
 	}
 
 	for (j in 1:max) {
+		# foi[j] <- inprod(ker[], cases[(j+lag-1):j])
+
 		foi[j] <- ker[1]*cases[j+4] + ker[2]*cases[j+3] + ker[3]*cases[j+2] + ker[4]*cases[j+1] + ker[5]*cases[j+0]
 	}
 
 	reporting ~ dbeta(0.1, 0.1)
 
-	for (j in 1:5){
-		ker[j] ~ dunif(0, 10)
-	}
-
-	R0 <- ker[1] + ker[2] + ker[3] + ker[4] + ker[5]
-	gtot <- 1*ker[1] + 2*ker[2] + 3*ker[3] + 4*ker[4] + 5*ker[5]
+	R0 <- sum(ker)
+	gtot <- inprod(lagvec, ker)
 	gen <- (gtot/R0)
-
 }

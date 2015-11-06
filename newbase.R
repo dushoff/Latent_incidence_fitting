@@ -10,17 +10,16 @@ max <- length(obs)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
 lagvec <- 1:lag
 
-precases = rep(2, lag)
-
 data <- list ("obs", "max", "lag", "lagvec")
-data <- list ("obs", "max")
 
 inits <- lapply (mult, function(m){
 	pre <- 1+m*obs[[1]]
 	return(list(
-		precases = rep(pre, lag),
-		postcases = 1+m*obs,
-		reporting = maxRep/m
+		cases = c(
+			rep(pre, lag)
+			, 1+m*obs
+		)
+		, reporting = maxRep/m
 	))
 })
 
