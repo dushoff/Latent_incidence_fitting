@@ -10,7 +10,8 @@ General
 Specific
 ========
 
-* Reporting delay or backup
+* Reporting delay
+ * backup and glitches
 
 * Sub-boxes within a week
  * parameterizing the generation interval
@@ -21,3 +22,5 @@ Specific
 
 * Spatial structure
  * even two or three subpopulations might help
+
+* Use death and/or HCW
