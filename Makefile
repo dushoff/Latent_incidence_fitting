@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: first.projtest.pdf 
+target pngtarget pdftarget vtarget acrtarget: OLD.base.pdf 
 
 ##################################################################
 
@@ -14,14 +14,22 @@ include stuff.mk
 
 ##################################################################
 
+# Discussion
+
+Sources += todo.md
+
+######################################################################
+
+
 ### Flow
 
 Sources += $(wildcard *.R)
 Sources += $(wildcard *.pl)
 Sources += $(wildcard *.bug)
+Sources += $(wildcard *.bugtmp)
 
 .PRECIOUS: obs%.autobug
-obs%.autobug: obs.bug flag.pl
+obs%.autobug: obs.bugtmp flag.pl
 	$(PUSHSTAR)
 
 data = $(gitroot)/techtex-ebola/Data
@@ -33,6 +41,10 @@ NIH%.scen.Rout: $(data)/NIH%/*confirmed*country*.csv scen.R
 .PRECIOUS: OLD%.scen.Rout
 OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 	$(run-R)
+
+######################################################################
+
+# base.R is a pure Poisson, renewal equation machine. Seems to work pretty weel for what it does, but not extensively tested. CIs are very tight on real data. Reporting ratios rarely identifiable, which is as it should be.
 
 NIH1.base.Rout: base.R
 
@@ -50,9 +62,6 @@ OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base
 	cat $^ > $@
 
 ### Not implemented; something to combine projections from different scenarios
-
-OLD.projections.Rout: OLD1.base.Rout.envir OLD2.base.Rout.envir OLD3.base.Rout.envir OLD4.base.Rout.envir scenario_project.R
-	$(run-R)
 
 ### Look at old projections with new data
 
