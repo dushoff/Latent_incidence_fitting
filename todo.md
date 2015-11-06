@@ -1,11 +1,7 @@
 General
 =======
 
-* Get rid of autobug (using inprod?)
-
 * Replace Poisson by negbin (binomial by beta binomial) and test limit
-
-* Mike thinks simplify bugs code by looping once!
 
 Specific
 ========
@@ -17,7 +13,7 @@ Specific
  * parameterizing the generation interval
  * individual heterogeneity (e.g., super-spreaders)
 
-* Beta responses
+* Changing transmission-rates
  * time, space, incidence
 
 * Spatial structure

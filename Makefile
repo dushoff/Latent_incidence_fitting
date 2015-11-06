@@ -53,14 +53,11 @@ OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 ### Developing the base bug script
 
 ### CURR
-OLD1.base.Rout: base5.autobug base.R
-
-%.newbase.Rout: i5000.Rout %.scen.Rout newobs5.bug newbase.R
-	$(run-R)
 
 .PRECIOUS: %.base.Rout
 %.base.Rout: i5000.Rout %.scen.Rout base5.autobug base.R
 	$(run-R)
+OLD1.base.Rout: base5.autobug base.R
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@
