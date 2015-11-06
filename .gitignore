@@ -12,6 +12,7 @@ commit.txt
 *.bbl
 
 *out
+*output
 *.RData
 *.Rlog
 *.r
