@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: OLD1.newbase.Rout 
+target pngtarget pdftarget vtarget acrtarget: first.projtest.pdf 
 
 ##################################################################
 
@@ -92,5 +92,7 @@ Makefile: start.makestuff
 -include $(ms)/git.mk
 -include $(ms)/visual.mk
 
+# -include $(ms)/wrapR.mk
+# -include $(ms)/oldlatex.mk
 -include $(ms)/perl.def
 -include $(ms)/wrapR.mk
