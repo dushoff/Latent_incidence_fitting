@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: OLD1.newbase.Rout 
+target pngtarget pdftarget vtarget acrtarget: OLD1.base.Rout 
 
 ##################################################################
 
@@ -28,8 +28,8 @@ Sources += $(wildcard *.pl)
 Sources += $(wildcard *.bug)
 Sources += $(wildcard *.bugtmp)
 
-.PRECIOUS: obs%.autobug
-obs%.autobug: obs.bugtmp flag.pl
+.PRECIOUS: base%.autobug
+base%.autobug: base.bugtmp flag.pl
 	$(PUSHSTAR)
 
 .PRECIOUS: newobs%.autobug
@@ -53,13 +53,13 @@ OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 ### Developing the base bug script
 
 ### CURR
-OLD1.newbase.Rout: newobs5.bug newbase.R
+OLD1.base.Rout: base5.autobug base.R
 
 %.newbase.Rout: i5000.Rout %.scen.Rout newobs5.bug newbase.R
 	$(run-R)
 
 .PRECIOUS: %.base.Rout
-%.base.Rout: i5000.Rout %.scen.Rout obs5.autobug base.R
+%.base.Rout: i5000.Rout %.scen.Rout base5.autobug base.R
 	$(run-R)
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf

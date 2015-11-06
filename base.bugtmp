@@ -1,0 +1,18 @@
+model{
+	for (j in 1:lag){
+		cases[j] ~ dnegbin(1/2, 1)
+		ker[j] ~ dunif(0, 10)
+	}
+
+	for (j in 1:max){
+		cases[lag+j] ~ dpois(foi[j])
+		obs[j] ~ dbin(reporting, cases[lag+j])
+	}
+
+	LAGCHAIN
+	reporting ~ dbeta(0.1, 0.1)
+
+	R0 <- sum(ker)
+	gtot <- inprod(lagvec, ker)
+	gen <- (gtot/R0)
+}
