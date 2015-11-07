@@ -1,9 +1,9 @@
-General
-=======
+Flow
+====
 
-* Replace Poisson by negbin (binomial by beta binomial) and test limit
+* More parameters, better make parsing
 
-Specific
+Model
 ========
 
 * Effective population size; exponent on S/N

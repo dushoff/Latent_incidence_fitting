@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: first.projtest.pdf 
+target pngtarget pdftarget vtarget acrtarget: project.pdf 
 
 ##################################################################
 
@@ -52,9 +52,6 @@ OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 %.base.Rout: i5000.Rout %.scen.Rout base5.autobug base.R
 	$(run-R)
 
-## CURR
-OLD1.base.Rout: base.bugtmp base.R
-
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@
 
@@ -64,8 +61,9 @@ OLD.base.pdf: OLD1.base.Rout.pdf OLD2.base.Rout.pdf OLD3.base.Rout.pdf OLD4.base
 OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base.Routput
 	cat $^ > $@
 
-### Look at old projections with new data
+##################################################################
 
+### Look at old projections with new data
 .PRECIOUS: first%.projtest.Rout
 first%.projtest.Rout: OLD%.base.Rout NIH%.scen.Rout projtest.R
 	$(run-R)
@@ -74,6 +72,18 @@ first.projtest.pdf: first1.projtest.Rout.pdf first2.projtest.Rout.pdf first3.pro
 	pdftk $^ cat output $@
 
 ######################################################################
+
+### Look at projections in general
+
+### CURR
+NIH1.project.Rout: NIH1.base.Rout project.R
+%.project.Rout: %.base.Rout project.R
+	$(run-R)
+
+project.pdf: NIH1.project.Rout.pdf NIH2.project.Rout.pdf NIH3.project.Rout.pdf NIH4.project.Rout.pdf
+	pdftk $^ cat output $@
+
+##################################################################
 
 ### Makestuff
 
