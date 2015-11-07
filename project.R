@@ -1,5 +1,6 @@
 q <- c(0.05, 0.25, 0.5, 0.75, 0.95)
 qm <- (1+length(q))/2
+top <- 4
 
 m <- sim$BUGSoutput$sims.matrix
 est <- t(apply(m, 2, function(v){quantile(v, probs = q)}))
@@ -11,6 +12,7 @@ t <- 1:nrow(est)
 plot(t, est[, qm]
 	, type="l"
 	, xlab="Week", ylab="Cases"
+	, yrange = c(0, max(est[, top]
 )
 
 points(t, obs)
