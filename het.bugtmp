@@ -22,7 +22,11 @@ model{
 
 	for (j in 1:max){
 		# _FOICHAIN_ is a magic word that's expanded in the autobug
-		incMean[j] <- (1-exp(-FOICHAIN/S[1]))*pow(S[lag+j]/S[1], -alpha)
+		incMean[j] <- (
+			(1-exp(-(epscase+FOICHAIN)/S[1]))
+			* pow(S[lag+j]/S[1], -alpha)
+			* (1-epscase)
+		)
 		inca[j] ~ dgamma(incShape/(1-incMean[j]), 1)
 		incb[j] ~ dgamma(incShape/incMean[j], 1)
 		inc[lag+j] ~ dbin(inca[j]/(inca[j]+incb[j]), S[lag+j])

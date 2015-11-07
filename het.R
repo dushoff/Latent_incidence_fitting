@@ -12,10 +12,10 @@ max <- length(obs)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
 lagvec <- 1:lag
 pop <- 6e6
-# epscase <- 0.01
+epscase <- 0.01
 
 data <- list ("obs", "max", "lag", "lagvec", "pop"
-	# , "epscase"
+	, "epscase"
 )
 
 inits <- lapply (mult, function(m){
