@@ -1,6 +1,7 @@
 require("R2jags")
 
-iterations <- 100
+set.seed(2112)
+# iterations <- 100
 
 mult <- 1:4
 maxRep <- 0.9

@@ -12,7 +12,7 @@ model{
 	for (j in 1:max){
 		# _FOICHAIN_ is a magic word that's expanded in the autobug
 		caseMean[j] <- FOICHAIN
-		caseRate[j] <- incShape/(caseMean[j])
+		caseRate[j] <- incShape/(caseMean[j]+0.01)
 		expCases[j] ~ dgamma(incShape, caseRate[j])
 		cases[lag+j] ~ dpois(expCases[j])
 		obs[j] ~ dbin(reporting, cases[lag+j])
