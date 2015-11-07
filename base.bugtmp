@@ -3,7 +3,8 @@
 ### a = shape/mean; b=shape/(1-mean)
 
 model{
-	repMean ~ dunif(0.1, 0.9)
+	# repMean ~ dunif(0.1, 0.9)
+	repMean ~ dbeta(1, 1)
 	repShape ~ dgamma(0.01, 0.01)
 	incShape ~  dgamma(0.01, 0.01)
 
