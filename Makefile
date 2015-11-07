@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH3.het.Rout 
+target pngtarget pdftarget vtarget acrtarget: project.pdf 
 
 ##################################################################
 
@@ -75,7 +75,7 @@ OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base
 NIH3.het.Rout: het.bugtmp het.R
 
 .PRECIOUS: %.het.Rout
-%.het.Rout: i5000.Rout %.scen.Rout het5.autobug het.R
+%.het.Rout: het.params.Rout %.het.params.Rout %.scen.Rout het5.autobug het.R
 	$(run-R)
 
 NIH.het.pdf: NIH1.het.Rout.pdf NIH2.het.Rout.pdf NIH3.het.Rout.pdf NIH4.het.Rout.pdf
@@ -101,13 +101,18 @@ first.projtest.pdf: first1.projtest.Rout.pdf first2.projtest.Rout.pdf first3.pro
 
 ### Look at projections in general
 
-%.project.Rout: %.base.Rout project.R
+%.project.Rout: %.het.Rout project.R
 	$(run-R)
 
 project.pdf: NIH1.project.Rout.pdf NIH2.project.Rout.pdf NIH3.project.Rout.pdf NIH4.project.Rout.pdf
 	pdftk $^ cat output $@
 
 ##################################################################
+
+### Specialized parameter files are optional
+
+%.params.R:
+	touch $@
 
 ### Makestuff
 

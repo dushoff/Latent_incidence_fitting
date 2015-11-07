@@ -17,7 +17,7 @@ data <- list ("obs", "max", "lag", "lagvec")
 inits <- lapply (mult, function(m){
 	pre <- 1+m*obs[[1]]
 	return(list(
-		cases = c(
+		inc = c(
 			rep(pre, lag)
 			, 1+m*obs
 		)

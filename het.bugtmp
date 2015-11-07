@@ -10,29 +10,30 @@ model{
 
 	# Effective population size and response
 	effProp ~ dbeta(1, 9)
-	S[1] <- effProp*pop
+	S[1] <- round(effProp*pop)
 	alpha ~ dgamma(5, 5)
 
 	# Pre-observation cases
 	for (j in 1:lag){
-		cases[j] ~ dnegbin(1/2, 1)
+		inc[j] ~ dnegbin(1/2, 1)
 		ker[j] ~ dunif(0, 10)
-		S[j+1] <- S[j] - cases[j]
+		S[j+1] <- S[j] - inc[j]
 	}
 
 	for (j in 1:max){
 		# _FOICHAIN_ is a magic word that's expanded in the autobug
-		caseMean[j] <- pow(S[j]/S[1], alpha)*FOICHAIN
-		caseRate[j] <- incShape/(caseMean[j]+epscase)
-		expCases[j] ~ dgamma(incShape, caseRate[j])
-		cases[lag+j] ~ dpois(expCases[j])
-		S[j+lag+1] <- S[j+lag] - cases[j+lag]
+		incMean[j] <- 1-exp(-FOICHAIN/S[1])
+		inca[j] ~ dgamma(incShape/(1-incMean[j]), 1)
+		incb[j] ~ dgamma(incShape/incMean[j], 1)
+		inc[lag+j] ~ dbin(inca[j]/(inca[j]+incb[j]), S[lag+j])
+
+		S[lag+j+1] <- S[lag+j] - inc[lag+j]
 
 		# Observation process
 		# rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
-		repa[j] ~ dgamma(repShape/repMean, 1)
-		repb[j] ~ dgamma(repShape/(1-repMean), 1)
-		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), cases[lag+j])
+		repa[j] ~ dgamma(repShape/(1-repMean), 1)
+		repb[j] ~ dgamma(repShape/repMean, 1)
+		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), inc[lag+j])
 	}
 
 	R0 <- sum(ker)

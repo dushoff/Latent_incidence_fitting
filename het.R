@@ -1,7 +1,7 @@
 require("R2jags")
 
 set.seed(2112)
-# iterations <- 100
+# iterations <- 1000
 
 mult <- 1:4
 maxRep <- 0.75
@@ -12,14 +12,16 @@ max <- length(obs)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
 lagvec <- 1:lag
 pop <- 6e6
-epscase <- 0.01
+# epscase <- 0.01
 
-data <- list ("obs", "max", "lag", "lagvec", "pop", "epscase")
+data <- list ("obs", "max", "lag", "lagvec", "pop"
+	# , "epscase"
+)
 
 inits <- lapply (mult, function(m){
 	pre <- 1+m*obs[[1]]
 	return(list(
-		cases = c(
+		inc = c(
 			rep(pre, lag)
 			, 1+m*obs
 		)
@@ -36,6 +38,7 @@ sim <- jags(model.file=input_files[[1]],
 		, "repMean"
 		, "obs"
 		, "effProp", "alpha"
+		# , "S", "inc", "incMean"
 	),
 	n.chains = length(mult), n.iter = iterations
 )

@@ -9,7 +9,7 @@ model{
 	incShape ~  dgamma(0.01, 0.01)
 
 	for (j in 1:lag){
-		cases[j] ~ dnegbin(1/2, 1)
+		inc[j] ~ dnegbin(1/2, 1)
 		ker[j] ~ dunif(0, 10)
 	}
 
@@ -18,12 +18,12 @@ model{
 		caseMean[j] <- FOICHAIN
 		caseRate[j] <- incShape/(caseMean[j]+0.01)
 		expCases[j] ~ dgamma(incShape, caseRate[j])
-		cases[lag+j] ~ dpois(expCases[j])
+		inc[lag+j] ~ dpois(expCases[j])
 
 		# rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
 		repa[j] ~ dgamma(repShape/repMean, 1)
 		repb[j] ~ dgamma(repShape/(1-repMean), 1)
-		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), cases[lag+j])
+		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), inc[lag+j])
 	}
 
 	R0 <- sum(ker)
