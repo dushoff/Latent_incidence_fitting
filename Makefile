@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: first.projtest.pdf 
+target pngtarget pdftarget vtarget acrtarget: OLD1.disp.Rout 
 
 ##################################################################
 
@@ -16,7 +16,7 @@ include stuff.mk
 
 # Discussion
 
-Sources += todo.md
+Sources += todo.md notes.md
 
 ######################################################################
 
@@ -71,8 +71,6 @@ OLD.base.pdf: OLD1.base.Rout.pdf OLD2.base.Rout.pdf OLD3.base.Rout.pdf OLD4.base
 
 OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base.Routput
 	cat $^ > $@
-
-### Not implemented; something to combine projections from different scenarios
 
 ### Look at old projections with new data
 

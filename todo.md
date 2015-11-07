@@ -6,6 +6,8 @@ General
 Specific
 ========
 
+* Effective population size; exponent on S/N
+
 * Reporting delay
  * backup and glitches
 

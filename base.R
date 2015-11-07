@@ -21,14 +21,14 @@ inits <- lapply (mult, function(m){
 			rep(pre, lag)
 			, 1+m*obs
 		)
-		, reporting = maxRep/m
+		, logitRepMean = qlogis(maxRep/m)
 		, ker = rep(1/lag, lag)
 	))
 })
 
 sim <- jags(model.file=input_files[[1]],
 	data=data, inits=inits, 
-	parameters = c("ker", "R0", "gen", "reporting", "obs"),
+	parameters = c("ker", "R0", "gen", "repMean", "obs"),
 	n.chains = length(mult), n.iter = iterations
 )
 

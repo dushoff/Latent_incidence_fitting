@@ -1,8 +1,12 @@
 ### gamma(shape, rate); rate = shape/mu
+### beta: mean = a/(a+b) = shape = ab/(a+b)
+### a = shape/mean; b=shape/(1-mean)
+
 model{
-	reporting ~ dbeta(0.1, 0.1)
-	# reportShape ~ dgamma(0.01, 0.01)
+	logitRepMean ~ dnorm(0, 0.01)
+	repShape ~ dgamma(0.01, 0.01)
 	incShape ~  dgamma(0.01, 0.01)
+	repMean <- ilogit(logitRepMean)
 
 	for (j in 1:lag){
 		cases[j] ~ dnegbin(1/2, 1)
@@ -15,7 +19,9 @@ model{
 		caseRate[j] <- incShape/(caseMean[j]+0.01)
 		expCases[j] ~ dgamma(incShape, caseRate[j])
 		cases[lag+j] ~ dpois(expCases[j])
-		obs[j] ~ dbin(reporting, cases[lag+j])
+
+		rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
+		obs[j] ~ dbin(rep[j], cases[lag+j])
 	}
 
 	R0 <- sum(ker)
