@@ -3,10 +3,9 @@
 ### a = shape/mean; b=shape/(1-mean)
 
 model{
-	logitRepMean ~ dnorm(0, 0.01)
+	repMean ~ dbeta(0.1, 0.1)
 	repShape ~ dgamma(0.01, 0.01)
 	incShape ~  dgamma(0.01, 0.01)
-	repMean <- ilogit(logitRepMean)
 
 	for (j in 1:lag){
 		cases[j] ~ dnegbin(1/2, 1)

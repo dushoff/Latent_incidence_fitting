@@ -21,7 +21,7 @@ inits <- lapply (mult, function(m){
 			rep(pre, lag)
 			, 1+m*obs
 		)
-		, logitRepMean = qlogis(maxRep/m)
+		, repMean = maxRep/m
 		, ker = rep(1/lag, lag)
 	))
 })
