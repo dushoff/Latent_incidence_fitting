@@ -4,7 +4,8 @@
 
 model{
 	# repMean ~ dbeta(0.1, 0.1)
-	repMean ~ dunif(0.1, 0.9)
+	# repMean ~ dunif(0.1, 0.9)
+	repMean <- 0.8
 	repShape ~ dgamma(0.01, 0.01)
 	incShape ~  dgamma(0.01, 0.01)
 
