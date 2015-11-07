@@ -9,8 +9,8 @@ model{
 	incShape ~  dgamma(0.01, 0.01)
 
 	# Effective population size and response
-	effProp ~ dbeta(0.1, 0.9)
-	S[1] <- pop
+	effProp ~ dbeta(1, 9)
+	S[1] <- effProp*pop
 	alpha ~ dgamma(5, 5)
 
 	# Pre-observation cases
