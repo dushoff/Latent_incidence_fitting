@@ -4,7 +4,7 @@ set.seed(2112)
 # iterations <- 100
 
 mult <- 1:4
-maxRep <- 0.9
+maxRep <- 0.75
 
 max <- length(obs)
 
@@ -26,10 +26,12 @@ inits <- lapply (mult, function(m){
 	))
 })
 
+print(inits)
+
 sim <- jags(model.file=input_files[[1]],
 	data=data, inits=inits, 
 	parameters = c("ker", "R0", "gen"
-		# , "repMean"
+		, "repMean"
 		, "obs"
 	),
 	n.chains = length(mult), n.iter = iterations
