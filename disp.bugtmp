@@ -21,8 +21,10 @@ model{
 		expCases[j] ~ dgamma(incShape, caseRate[j])
 		cases[lag+j] ~ dpois(expCases[j])
 
-		rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
-		obs[j] ~ dbin(rep[j], cases[lag+j])
+		# rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
+		repa[j] ~ dgamma(repShape/repMean, 1)
+		repb[j] ~ dgamma(repShape/(1-repMean), 1)
+		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), cases[lag+j])
 	}
 
 	R0 <- sum(ker)
