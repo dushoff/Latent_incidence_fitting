@@ -34,7 +34,9 @@ base%.autobug: base.bugtmp flag.pl
 
 .PRECIOUS: disp%.autobug
 disp%.autobug: disp.bugtmp lagchain.pl
+	$(RM) $@
 	$(PUSHSTAR)
+	$(READONLY)
 
 disp5.autobug: disp.bugtmp lagchain.pl
 
@@ -56,10 +58,10 @@ OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 %.base.Rout: i5000.Rout %.scen.Rout base5.autobug base.R
 	$(run-R)
 
-%.disp.Rout: i5000.Rout %.scen.Rout disp5.autobug base.R
+%.disp.Rout: i5000.Rout %.scen.Rout disp5.autobug disp.R
 	$(run-R)
 ## CURR
-OLD1.disp.Rout: disp.bugtmp base.R
+OLD1.base.Rout: base.bugtmp base.R
 
 NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
 	pdftk $^ cat output $@

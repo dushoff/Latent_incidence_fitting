@@ -7,16 +7,16 @@ model{
 	for (j in 1:lag){
 		cases[j] ~ dnegbin(1/2, 1)
 		ker[j] ~ dunif(0, 10)
-		# _FOICHAIN_ is a magic word that's expanded in the autobug
 	}
 
 	for (j in 1:max){
-		caseRate[j] <- incShape/(FOICHAIN)
+		# _FOICHAIN_ is a magic word that's expanded in the autobug
+		caseMean[j] <- FOICHAIN
+		caseRate[j] <- incShape/(caseMean[j])
 		expCases[j] ~ dgamma(incShape, caseRate[j])
 		cases[lag+j] ~ dpois(expCases[j])
 		obs[j] ~ dbin(reporting, cases[lag+j])
 	}
-
 
 	R0 <- sum(ker)
 	gtot <- inprod(lagvec, ker)

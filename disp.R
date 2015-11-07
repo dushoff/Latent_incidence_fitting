@@ -1,7 +1,5 @@
 require("R2jags")
 
-iterations <- 100
-
 mult <- 1:4
 maxRep <- 0.9
 
@@ -21,7 +19,6 @@ inits <- lapply (mult, function(m){
 			, 1+m*obs
 		)
 		, reporting = maxRep/m
-		, ker = rep(1/lag, lag)
 	))
 })
 
