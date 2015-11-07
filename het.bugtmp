@@ -1,0 +1,41 @@
+### gamma(shape, rate); rate = shape/mu
+### beta: mean = a/(a+b) = shape = ab/(a+b)
+### a = shape/mean; b=shape/(1-mean)
+
+model{
+	# Dispersion
+	repMean ~ dbeta(1, 1)
+	repShape ~ dgamma(0.01, 0.01)
+	incShape ~  dgamma(0.01, 0.01)
+
+	# Effective population size and response
+	effProp ~ dbeta(0.1, 0.9)
+	S[1] <- pop
+	alpha ~ dgamma(5, 5)
+
+	# Pre-observation cases
+	for (j in 1:lag){
+		cases[j] ~ dnegbin(1/2, 1)
+		ker[j] ~ dunif(0, 10)
+		S[j+1] <- S[j] - cases[j]
+	}
+
+	for (j in 1:max){
+		# _FOICHAIN_ is a magic word that's expanded in the autobug
+		caseMean[j] <- pow(S[j]/S[1], alpha)*FOICHAIN
+		caseRate[j] <- incShape/(caseMean[j]+epscase)
+		expCases[j] ~ dgamma(incShape, caseRate[j])
+		cases[lag+j] ~ dpois(expCases[j])
+		S[j+lag+1] <- S[j+lag] - cases[j+lag]
+
+		# Observation process
+		# rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
+		repa[j] ~ dgamma(repShape/repMean, 1)
+		repb[j] ~ dgamma(repShape/(1-repMean), 1)
+		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), cases[lag+j])
+	}
+
+	R0 <- sum(ker)
+	gtot <- inprod(lagvec, ker)
+	gen <- (gtot/R0)
+}

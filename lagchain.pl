@@ -12,6 +12,6 @@ for (my $i=1; $i<=$lag;$i++){
 my $lagchain .= join " + ", @lterms;
 
 while(<>){
-	s/\bFOICHAIN\b/$lagchain/;
+	s/\bFOICHAIN\b/($lagchain)/;
 	print;
 }
