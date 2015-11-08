@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH3.het.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIH3.project.Rout 
 
 ##################################################################
 
@@ -71,7 +71,6 @@ OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base
 
 # het takes the R <- R0 S^α approach to changing transmission through time
 
-## CURR
 NIH3.het.Rout: het.bugtmp het.R
 
 .PRECIOUS: %.het.Rout
@@ -100,6 +99,9 @@ first.projtest.pdf: first1.projtest.Rout.pdf first2.projtest.Rout.pdf first3.pro
 ######################################################################
 
 ### Look at projections in general
+
+## CURR
+NIH3.project.Rout: project.R
 
 %.project.Rout: %.het.Rout project.R
 	$(run-R)
