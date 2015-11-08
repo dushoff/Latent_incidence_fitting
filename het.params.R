@@ -1,11 +1,13 @@
-iterations <- 100000
 iterations <- 100
+iterations <- 50000
 
 # Reporting and effective population hyper-parameters
 repHmean <- 0.5
 repHShape <- 0.5
 effPropHmean <- 0.5
 effPropHShape <- 0.5
+hetShape <- 0.1
+hetMean <- 0.5
 
 # shape for the broad gammas underlying the beta-binomials
 shapeH <- 0.01

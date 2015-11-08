@@ -9,6 +9,7 @@ model{
 	incShape ~  dgamma(shapeH, shapeH)
 
 	# Effective population size and response
+	alpha ~ dgamma(hetShape, hetShape/hetMean)
 	effProp ~ dbeta(effPropHa, effPropHb)
 	S[1] <- round(effProp*pop)
 
@@ -21,7 +22,7 @@ model{
 
 	for (j in 1:max){
 		# _FOICHAIN_ is a magic word that's expanded in the autobug
-		foi[j] <- (FOICHAIN + foieps)/S[1]
+		foi[j] <- (FOICHAIN*pow(S[lag+j]/S[1], -alpha) + foieps)/S[1]
 		incMean[j] <- 1 - pow(1+foi[j]/kappa, -kappa) 
 		inca[j] ~ dgamma(incShape/(1-incMean[j]), 1)
 		incb[j] ~ dgamma(incShape/incMean[j], 1)

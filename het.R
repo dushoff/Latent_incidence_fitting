@@ -24,6 +24,7 @@ data <- list ("obs", "max", "lag", "lagvec", "pop"
 	, "effPropHa", "effPropHb"
 	, "preExp"
 	, "kerShape" , "kerMean"
+	, "hetShape" , "hetMean"
 	, "shapeH"
 )
 
