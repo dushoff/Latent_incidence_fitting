@@ -2,22 +2,29 @@ require("R2jags")
 
 set.seed(2112)
 
-pop <- 6e6
-foieps <- 0.001
-kappa <- 3
-
-mult <- 1:4
-maxRep <- 0.75
-
 max <- length(obs)
 
 # Parse the lag out of the model file name (clunky)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
 lagvec <- 1:lag
 
+### Make parameters in bug form
+repHa <- repHShape/(1-repHmean)
+repHb <- repHShape/repHmean
+
+effPropHa <- effPropHShape/(1-effPropHmean)
+effPropHb <- effPropHShape/effPropHmean
+
+preExp <- preMean/(lag+preMean)
+
 data <- list ("obs", "max", "lag", "lagvec", "pop"
 	, "foieps"
 	, "kappa"
+	, "repHa", "repHb"
+	, "effPropHa", "effPropHb"
+	, "preExp"
+	, "kerShape" , "kerMean"
+	, "shapeH"
 )
 
 inits <- lapply (mult, function(m){

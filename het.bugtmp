@@ -4,19 +4,18 @@
 
 model{
 	# Dispersion
-	repMean ~ dbeta(1, 1)
-	repShape ~ dgamma(0.01, 0.01)
-	incShape ~  dgamma(0.01, 0.01)
+	repMean ~ dbeta(repHa, repHb)
+	repShape ~ dgamma(shapeH, shapeH)
+	incShape ~  dgamma(shapeH, shapeH)
 
 	# Effective population size and response
-	effProp ~ dbeta(1, 9)
+	effProp ~ dbeta(effPropHa, effPropHb)
 	S[1] <- round(effProp*pop)
-	alpha ~ dgamma(5, 5)
 
-	# Pre-observation cases
+	# Pre-observation and kernel
 	for (j in 1:lag){
-		inc[j] ~ dnegbin(1/2, 1)
-		ker[j] ~ dunif(0, 10)
+		ker[j] ~ dgamma(kerShape, lag*kerShape/kerMean)
+		inc[j] ~ dnegbin(preExp, 1)
 		S[j+1] <- S[j] - inc[j]
 	}
 
