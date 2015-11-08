@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: project.pdf 
+target pngtarget pdftarget vtarget acrtarget: NIH3.het.Rout 
 
 ##################################################################
 

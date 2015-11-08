@@ -1,7 +1,10 @@
 require("R2jags")
 
 set.seed(2112)
-# iterations <- 1000
+
+pop <- 6e6
+foieps <- 0.001
+kappa <- 3
 
 mult <- 1:4
 maxRep <- 0.75
@@ -11,11 +14,10 @@ max <- length(obs)
 # Parse the lag out of the model file name (clunky)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
 lagvec <- 1:lag
-pop <- 6e6
-epscase <- 0.01
 
 data <- list ("obs", "max", "lag", "lagvec", "pop"
-	, "epscase"
+	, "foieps"
+	, "kappa"
 )
 
 inits <- lapply (mult, function(m){
@@ -25,7 +27,7 @@ inits <- lapply (mult, function(m){
 			rep(pre, lag)
 			, 1+m*obs
 		)
-		# , repMean = maxRep/m
+		, repMean = maxRep/m
 		, ker = rep(1/lag, lag)
 	))
 })
@@ -46,3 +48,5 @@ sim <- jags(model.file=input_files[[1]],
 print(sim)
 plot(sim)
 # traceplot(sim)
+
+proc.time()
