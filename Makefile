@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH3.project.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIH.het.traceplot.pdf 
 
 ##################################################################
 
@@ -106,10 +106,18 @@ NIH3.project.Rout: project.R
 %.project.Rout: %.het.Rout project.R
 	$(run-R)
 
-project.pdf: NIH1.project.Rout.pdf NIH2.project.Rout.pdf NIH3.project.Rout.pdf NIH4.project.Rout.pdf
+NIH.project.pdf: 
+
+NIH.%.pdf: NIH1.%.Rout.pdf NIH2.%.Rout.pdf NIH3.%.Rout.pdf NIH4.%.Rout.pdf
 	pdftk $^ cat output $@
 
 ##################################################################
+
+### Traceplots
+
+NIH.het.traceplot.pdf:
+%.traceplot.Rout: %.Rout traceplot.R
+	$(run-R)
 
 ### Specialized parameter files are optional
 
