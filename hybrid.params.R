@@ -1,4 +1,6 @@
 iterations <- 50000
+forecast <- 100
+seed <- 2112
 
 # Reporting and effective population hyper-parameters
 effRepHmean <- 0.5

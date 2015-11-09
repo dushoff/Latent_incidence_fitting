@@ -1,6 +1,8 @@
 require("R2jags")
 
-set.seed(2112)
+set.seed(seed)
+
+if(forecast>0) obs <- c(obs, rep(NA, forecast))
 
 max <- length(obs)
 
