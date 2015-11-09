@@ -1,6 +1,5 @@
 iterations <- 25000
 forecast <- 100
-forecast <- 4
 seed <- 2112
 
 # Reporting and effective population hyper-parameters
