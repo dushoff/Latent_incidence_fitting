@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH3.project.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIH3.hybrid.Rout 
 
 ##################################################################
 
@@ -30,6 +30,12 @@ Sources += $(wildcard *.bugtmp)
 
 .PRECIOUS: base%.autobug
 base%.autobug: base.bugtmp lagchain.pl
+	$(RM) $@
+	$(PUSHSTAR)
+	$(READONLY)
+
+.PRECIOUS: hybrid%.autobug
+hybrid%.autobug: hybrid.bugtmp lagchain.pl
 	$(RM) $@
 	$(PUSHSTAR)
 	$(READONLY)
@@ -88,6 +94,25 @@ OLD.het.output: OLD2.het.Routput OLD2.het.Routput OLD3.het.Routput OLD4.het.Rout
 
 ##################################################################
 
+# hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
+
+NIH3.hybrid.Rout: hybrid.bugtmp hybrid.R
+
+.PRECIOUS: %.hybrid.Rout
+%.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout het5.autobug hybrid.R
+	$(run-R)
+
+NIH.hybrid.pdf: NIH1.hybrid.Rout.pdf NIH2.hybrid.Rout.pdf NIH3.hybrid.Rout.pdf NIH4.hybrid.Rout.pdf
+	pdftk $^ cat output $@
+
+OLD.hybrid.pdf: OLD1.hybrid.Rout.pdf OLD2.hybrid.Rout.pdf OLD3.hybrid.Rout.pdf OLD4.hybrid.Rout.pdf
+	pdftk $^ cat output $@
+
+OLD.hybrid.output: OLD2.hybrid.Routput OLD2.hybrid.Routput OLD3.hybrid.Routput OLD4.hybrid.Routput
+	cat $^ > $@
+
+##################################################################
+
 ### Look at old projections with new data
 .PRECIOUS: first%.projtest.Rout
 first%.projtest.Rout: OLD%.het.Rout NIH%.scen.Rout projtest.R
@@ -115,7 +140,6 @@ NIH.%.pdf: NIH1.%.Rout.pdf NIH2.%.Rout.pdf NIH3.%.Rout.pdf NIH4.%.Rout.pdf
 
 ### Traceplots
 
-NIH.het.traceplot.pdf:
 %.traceplot.Rout: %.Rout traceplot.R
 	$(run-R)
 

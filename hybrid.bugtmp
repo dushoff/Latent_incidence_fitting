@@ -1,0 +1,62 @@
+model{
+	# Dispersion
+	repShape ~ dgamma(shapeH, shapeH)
+	incShape ~  dgamma(shapeH, shapeH)
+
+	# Effective population size and response
+	alpha ~ dgamma(hetShape, hetShape/hetMean)
+	effRep ~ dbeta(effRepHa, effRepHb)
+	RRprop ~ dunif(0, 1)
+	effProp <- pow(effRep,1-RRprop)
+	repMean <- pow(effRep,RRprop)
+
+	S[1] <- effProp*pop
+
+	# kernel
+	R0 ~ dgamma(Rshape, Rshape/Rmean)
+	genPos ~ dgamma(gpShape, gpShape/gpMean)
+	genShape ~ dgamma(gsShape, gsShape/gsMean)
+
+	genP <- genPos/(genPos+genShape)
+
+
+	for(j in 1:(lag+max){
+		S[j+1] <- S[j] - shadowInc[j]/repMean
+	}
+
+	# Pre-observation and kernel
+	for (j in 1:lag){
+		preker[j] <- pow(r, genShape)*pow(genP, r)
+		ker[j] <- R0*preker[j]/sum(preker)
+		shadowInc[j] ~ dnegbin(preExp, 1)
+	}
+
+	for (j in 1:max){
+		# _FOICHAIN_ is a magic word that's expanded in the autobug
+		## foi is the expected number _reported_. 
+		foi[j] <- FOICHAIN*pow(S[lag+j]/S[1], 1+alpha)
+
+		## shadowInc is the expected number reported _given_ the true incidence
+		## Cannot exceed S[lag+j]*repMean
+
+		preIncShape[j] <- (foi[j]/repMean + incShape)/(foi[j]*repMean$incShape)
+		preInc[j] ~ dgamma(preIncShape, preIncShape/foi[j])
+
+		incMean[j] <- 1 - pow(1+foi[j]/kappa, -kappa) 
+		inca[j] ~ dgamma(incShape/(1-incMean[j]), 1)
+		incb[j] ~ dgamma(incShape/incMean[j], 1)
+		inc[lag+j] ~ dbin(inca[j]/(inca[j]+incb[j]), S[lag+j])
+
+		S[lag+j+1] <- S[lag+j] - S[j] - shadowInc[lag+j]/repMean
+
+		# Observation process
+		# rep[j] ~ dbeta(repShape/repMean, repShape/(1-repMean))
+		repa[j] ~ dgamma(repShape/(1-repMean), 1)
+		repb[j] ~ dgamma(repShape/repMean, 1)
+		obs[j] ~ dbin(repa[j]/(repa[j]+repb[j]), inc[lag+j])
+	}
+
+	R0 <- sum(ker)
+	gtot <- inprod(lagvec, ker)
+	gen <- (gtot/R0)
+}

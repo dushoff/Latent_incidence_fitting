@@ -1,11 +1,9 @@
 iterations <- 100000
-iterations <- 5000
+iterations <- 100
 
 # Reporting and effective population hyper-parameters
-repHmean <- 0.5
-repHShape <- 2.5
-effPropHmean <- 0.5
-effPropHShape <- 1.5
+effRepHmean <- 0.5
+effRepHShape <- 1.5
 hetShape <- 1
 hetMean <- 0.1
 
