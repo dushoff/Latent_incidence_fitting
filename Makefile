@@ -131,7 +131,7 @@ NIH3.project.Rout: project.R
 %.project.Rout: %.hybrid.Rout project.R
 	$(run-R)
 
-NIH.project.pdf: 
+NIH.project.pdf: project.R
 
 NIH.%.pdf: NIH1.%.Rout.pdf NIH2.%.Rout.pdf NIH3.%.Rout.pdf NIH4.%.Rout.pdf
 	pdftk $^ cat output $@

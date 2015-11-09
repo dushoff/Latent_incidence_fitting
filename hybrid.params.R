@@ -1,10 +1,11 @@
-iterations <- 50000
+iterations <- 2500
 forecast <- 100
+forecast <- 4
 seed <- 2112
 
 # Reporting and effective population hyper-parameters
-effRepHmean <- 0.5
-effRepHShape <- 1.5
+effRepHmean <- 0.1
+effRepHShape <- 0.5
 hetShape <- 1
 hetMean <- 0.1
 
@@ -17,7 +18,7 @@ Rshape <- 0.1
 Rmean <- 1
 	
 gpShape <- 0.1
-gpMean <- 1
+gpMean <- 0.5
 	
 gsShape <- 0.1
 gsMean <- 1

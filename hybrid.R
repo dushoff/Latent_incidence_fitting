@@ -28,9 +28,13 @@ data <- list ("obs", "max", "lag", "lagvec", "pop"
 )
 
 inits <- lapply (mult, function(m){
-	pre <- 1+m*obs[[1]]
+	pre <- 1+obs[[1]]
 	return(list(
 		effRep = maxRep/m
+		, preInc = c(
+			rep(pre, lag)
+			, 1+obs
+		)
 	))
 })
 

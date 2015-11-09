@@ -14,16 +14,20 @@ model{
 
 	# kernel
 	R0 ~ dgamma(Rshape, Rshape/Rmean)
-	genPos ~ dgamma(gpShape, gpShape/gpMean)
-	genShape ~ dgamma(gsShape, gsShape/gsMean)
 
-	genP <- genPos/(genPos+genShape)
+	# genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
+	genPos ~ dbeta(1, 1)
+	# gpa ~ dgamma(gpShape/(1-gpMean), 1)
+	# gpb ~ dgamma(gpShape/gpMean, 1)
+	# genPos <- gpa/(gpa+gpb)
+
+	genShape ~ dgamma(gsShape, gsShape/gsMean)
 
 	# Pre-observation and kernel
 	for (j in 1:lag){
-		preker[j] <- pow(j, genShape)*pow(genP, j)
+		preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1, genShape/genPos)
 		ker[j] <- R0*preker[j]/sum(preker)
-		inc[j] ~ dnegbin(preExp, 1)
+		preInc[j] ~ dnegbin(preExp, 1)
 	}
 
 	for (j in 1:max){
@@ -33,20 +37,11 @@ model{
 
 		## inc is really "shadow" incidence:
 		##  the expected number reported _given_ the true incidence
-		## Called inc because of autobug
-		## preInc is there to make sure inc is not too big
+		## preInc is calculated first to make sure inc is not too big
 		## (cannot exceed S[lag+j]*repMean)
 
 		preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean)
-		preInc[j] ~ dgamma(preIncShape[j], preIncShape[j]/foi[j])
-
-		inc[lag+j] <- foieps + S[lag+j]*repMean*
-		(1 - pow(1+preInc[j]/(S[lag+j]*repMean*kappa), -kappa)) 
-
-		# 	inc[lag+j] <- (0*kappa + 
-		# 		S[lag+j]*repMean*preInc[j]
-		# 		/ (S[lag+j]*repMean+preInc[j])
-		# 	)
+		preInc[lag+j] ~ dgamma(preIncShape[j], preIncShape[j]/foi[j])
 
 		# Observation process
 		# obs[j] ~ dnegbin(inc[lag+j]*repShape/(inc[lag+j]+repShape), repShape)
@@ -56,6 +51,9 @@ model{
 
 	for(j in 1:(lag+max)){
 		S[j+1] <- foieps + S[j] - inc[j]/repMean
+
+		inc[j] <- foieps + S[j]*repMean*
+			(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa)) 
 	}
 
 	gen <- inprod(lagvec, ker)/R0
