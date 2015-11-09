@@ -1,4 +1,4 @@
-iterations <- 2500
+iterations <- 25000
 forecast <- 100
 forecast <- 4
 seed <- 2112
@@ -17,7 +17,7 @@ shapeH <- 0.1
 Rshape <- 0.1
 Rmean <- 1
 	
-gpShape <- 0.1
+gpShape <- 0.25
 gpMean <- 0.5
 	
 gsShape <- 0.1
@@ -26,7 +26,7 @@ gsMean <- 1
 # Prior on mean cases in the pre-reporting period (these cause the first observed cases)
 preMean <- 3
 
-pop <- 6e6
+pop <- 4e6
 foieps <- 0.001
 kappa <- 3
 

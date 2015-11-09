@@ -15,8 +15,8 @@ model{
 	# kernel
 	R0 ~ dgamma(Rshape, Rshape/Rmean)
 
-	# genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
-	genPos ~ dbeta(1, 1)
+	genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
+	# genPos ~ dbeta(0.5, 0.5)
 	# gpa ~ dgamma(gpShape/(1-gpMean), 1)
 	# gpb ~ dgamma(gpShape/gpMean, 1)
 	# genPos <- gpa/(gpa+gpb)

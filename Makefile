@@ -134,7 +134,7 @@ NIH3.project.Rout: project.R
 NIH.project.pdf: project.R
 
 NIH.%.pdf: NIH1.%.Rout.pdf NIH2.%.Rout.pdf NIH3.%.Rout.pdf NIH4.%.Rout.pdf
-	pdftk $^ cat output $@
+	pdftk $(filter %.pdf, $^)  cat output $@
 
 ##################################################################
 
