@@ -36,7 +36,7 @@ print(inits)
 
 sim <- jags(model.file=input_files[[1]],
 	data=data, inits=inits, 
-	parameters = c("ker", "R0", "gen", "Rcheck"
+	parameters = c("ker", "R0", "gen"
 		, "repMean"
 		, "effRep", "RRprop", "alpha"
 		, "obs"

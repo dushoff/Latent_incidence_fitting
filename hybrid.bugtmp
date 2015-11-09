@@ -19,10 +19,6 @@ model{
 
 	genP <- genPos/(genPos+genShape)
 
-	for(j in 1:(lag+max)){
-		S[j+1] <- S[j] - inc[j]/repMean
-	}
-
 	# Pre-observation and kernel
 	for (j in 1:lag){
 		preker[j] <- pow(j, genShape)*pow(genP, j)
@@ -41,16 +37,25 @@ model{
 		## preInc is there to make sure inc is not too big
 		## (cannot exceed S[lag+j]*repMean)
 
-		preIncShape[j] <- (foi[j]/repMean + incShape)/(foi[j]*incShape/repMean)
+		preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean)
 		preInc[j] ~ dgamma(preIncShape[j], preIncShape[j]/foi[j])
 
-		inc[lag+j] <- S[lag+j]*repMean*
-			(1 - pow(1+preInc[j]/(S[lag+j]*repMean*kappa), -kappa)) 
+		inc[lag+j] <- foieps + S[lag+j]*repMean*
+		(1 - pow(1+preInc[j]/(S[lag+j]*repMean*kappa), -kappa)) 
+
+		# 	inc[lag+j] <- (0*kappa + 
+		# 		S[lag+j]*repMean*preInc[j]
+		# 		/ (S[lag+j]*repMean+preInc[j])
+		# 	)
 
 		# Observation process
 		# obs[j] ~ dnegbin(inc[lag+j]*repShape/(inc[lag+j]+repShape), repShape)
 		obsMean[j] ~ dgamma(repShape, repShape/inc[lag+j])
 		obs[j] ~ dpois(obsMean[j])
+	}
+
+	for(j in 1:(lag+max)){
+		S[j+1] <- foieps + S[j] - inc[j]/repMean
 	}
 
 	gen <- inprod(lagvec, ker)/R0
