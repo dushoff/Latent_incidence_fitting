@@ -8,35 +8,27 @@ max <- length(obs)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
 lagvec <- 1:lag
 
-### Make parameters in bug form
-repHa <- repHShape/(1-repHmean)
-repHb <- repHShape/repHmean
-
-effPropHa <- effPropHShape/(1-effPropHmean)
-effPropHb <- effPropHShape/effPropHmean
+effRepHa <- effRepHShape/(1-effRepHmean)
+effRepHb <- effRepHShape/effRepHmean
 
 preExp <- preMean/(lag+preMean)
 
 data <- list ("obs", "max", "lag", "lagvec", "pop"
 	, "foieps"
 	, "kappa"
-	, "repHa", "repHb"
-	, "effPropHa", "effPropHb"
+	, "effRepHa", "effRepHb"
 	, "preExp"
-	, "kerShape" , "kerMean"
 	, "hetShape" , "hetMean"
 	, "shapeH"
+	, "Rshape", "Rmean"
+	, "gpShape", "gpMean"
+	, "gsShape", "gsMean"
 )
 
 inits <- lapply (mult, function(m){
 	pre <- 1+m*obs[[1]]
 	return(list(
-		inc = c(
-			rep(pre, lag)
-			, 1+m*obs
-		)
-		, repMean = maxRep/m
-		, ker = rep(1/lag, lag)
+		effRep = maxRep/m
 	))
 })
 
@@ -44,17 +36,17 @@ print(inits)
 
 sim <- jags(model.file=input_files[[1]],
 	data=data, inits=inits, 
-	parameters = c("ker", "R0", "gen"
+	parameters = c("ker", "R0", "gen", "Rcheck"
 		, "repMean"
+		, "effRep", "RRprop", "alpha"
 		, "obs"
-		, "effProp", "alpha"
-		# , "S", "inc", "incMean"
+		, "inc", "preInc", "foi"
 	),
 	n.chains = length(mult), n.iter = iterations
 )
 
 print(sim)
 plot(sim)
-# traceplot(sim)
+traceplot(sim)
 
 proc.time()

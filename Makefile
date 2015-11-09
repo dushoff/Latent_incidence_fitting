@@ -99,7 +99,7 @@ OLD.het.output: OLD2.het.Routput OLD2.het.Routput OLD3.het.Routput OLD4.het.Rout
 NIH3.hybrid.Rout: hybrid.bugtmp hybrid.R
 
 .PRECIOUS: %.hybrid.Rout
-%.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout het5.autobug hybrid.R
+%.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
 NIH.hybrid.pdf: NIH1.hybrid.Rout.pdf NIH2.hybrid.Rout.pdf NIH3.hybrid.Rout.pdf NIH4.hybrid.Rout.pdf
@@ -128,7 +128,7 @@ first.projtest.pdf: first1.projtest.Rout.pdf first2.projtest.Rout.pdf first3.pro
 ## CURR
 NIH3.project.Rout: project.R
 
-%.project.Rout: %.het.Rout project.R
+%.project.Rout: %.hybrid.Rout project.R
 	$(run-R)
 
 NIH.project.pdf: 

@@ -1,5 +1,4 @@
-iterations <- 100000
-iterations <- 100
+iterations <- 50000
 
 # Reporting and effective population hyper-parameters
 effRepHmean <- 0.5
@@ -10,9 +9,16 @@ hetMean <- 0.1
 # shape for the broad gammas underlying the beta-binomials
 shapeH <- 0.1
 
-# Shape for the kernel priors and mean of their _sum_ (R0)
-kerShape <- 0.1
-kerMean <- 1
+# Shape for the kernel priors 
+	
+Rshape <- 0.1
+Rmean <- 1
+	
+gpShape <- 0.1
+gpMean <- 1
+	
+gsShape <- 0.1
+gsMean <- 1
 
 # Prior on mean cases in the pre-reporting period (these cause the first observed cases)
 preMean <- 3
