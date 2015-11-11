@@ -58,12 +58,12 @@ NIH%.scen.Rout: $(data)/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
 .PRECIOUS: T1.NIH%.scen.Rout
-T1.NIH%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
+T1.NIH%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
 #TEMP
 .PRECIOUS: T2.NIH%.scen.Rout
-T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/*confirmed*country*.csv scen.R
+T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
 ######################################################################
