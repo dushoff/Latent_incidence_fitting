@@ -48,12 +48,21 @@ het%.autobug: het.bugtmp lagchain.pl
 
 data = $(gitroot)/techtex-ebola/Data
 
+### Don't like this rule, but I need a uniform name because of make bugs!
+.PRECIOUS: %/country_confirmed.csv
+%/country_confirmed.csv: %/*confirmed*country*.csv
+	/bin/cp $< $@
+
 .PRECIOUS: %.scen.Rout
-NIH%.scen.Rout: $(data)/NIH%/*confirmed*country*.csv scen.R
+NIH%.scen.Rout: $(data)/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
-.PRECIOUS: OLD%.scen.Rout
-OLD%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
+.PRECIOUS: T1.NIH%.scen.Rout
+T1.NIH%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
+	$(run-R)
+
+.PRECIOUS: T2.NIH%.scen.Rout
+T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/*confirmed*country*.csv scen.R
 	$(run-R)
 
 ######################################################################
@@ -76,8 +85,6 @@ OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base
 ######################################################################
 
 # het takes the R <- R0 S^α approach to changing transmission through time
-
-NIH3.het.Rout: het.bugtmp het.R
 
 .PRECIOUS: %.het.Rout
 %.het.Rout: het.params.Rout %.het.params.Rout %.scen.Rout het5.autobug het.R
