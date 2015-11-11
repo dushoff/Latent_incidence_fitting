@@ -16,7 +16,6 @@ model{
 	R0 ~ dgamma(Rshape, Rshape/Rmean)
 
 	genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
-	# genPos ~ dbeta(0.5, 0.5)
 	# gpa ~ dgamma(gpShape/(1-gpMean), 1)
 	# gpb ~ dgamma(gpShape/gpMean, 1)
 	# genPos <- gpa/(gpa+gpb)
@@ -27,12 +26,13 @@ model{
 	for (j in 1:lag){
 		preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1, genShape/genPos)
 		ker[j] <- R0*preker[j]/sum(preker)
-		preInc[j] ~ dnegbin(preExp, 1)
+		preInc[j] ~ dexp(preExp)
 	}
 
 	for (j in 1:max){
 		# _FOICHAIN_ is a magic word that's expanded in the autobug
 		## foi is the expected number _reported_. 
+		## e.g. (ker[1]*inc[j+2] + ker[2]*inc[j+1] + ker[3]*inc[j+0])
 		foi[j] <- FOICHAIN*pow(S[lag+j]/S[1], 1+alpha)+foieps
 
 		## inc is really "shadow" incidence:
@@ -44,7 +44,6 @@ model{
 		preInc[lag+j] ~ dgamma(preIncShape[j], preIncShape[j]/foi[j])
 
 		# Observation process
-		# obs[j] ~ dnegbin(inc[lag+j]*repShape/(inc[lag+j]+repShape), repShape)
 		obsMean[j] ~ dgamma(repShape, repShape/inc[lag+j])
 		obs[j] ~ dpois(obsMean[j])
 	}

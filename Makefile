@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIH3.project.Rout 
+target pngtarget pdftarget vtarget acrtarget: T2.NIH1.hybrid.Rout 
 
 ##################################################################
 
@@ -61,6 +61,7 @@ NIH%.scen.Rout: $(data)/NIH%/country_confirmed.csv scen.R
 T1.NIH%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/*confirmed*country*.csv scen.R
 	$(run-R)
 
+#TEMP
 .PRECIOUS: T2.NIH%.scen.Rout
 T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/*confirmed*country*.csv scen.R
 	$(run-R)
@@ -103,7 +104,7 @@ OLD.het.output: OLD2.het.Routput OLD2.het.Routput OLD3.het.Routput OLD4.het.Rout
 
 # hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
 
-NIH3.hybrid.Rout: hybrid.bugtmp hybrid.R
+T2.NIH1.hybrid.Rout: hybrid.bugtmp hybrid.params.R hybrid.R
 
 .PRECIOUS: %.hybrid.Rout
 %.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout hybrid5.autobug hybrid.R
