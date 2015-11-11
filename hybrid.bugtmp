@@ -12,23 +12,20 @@ model{
 
 	S[1] <- effProp*pop
 
-	# kernel
+	# Kernel and pre-observation period
 	R0 ~ dgamma(Rshape, Rshape/Rmean)
 
 	genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
-	# gpa ~ dgamma(gpShape/(1-gpMean), 1)
-	# gpb ~ dgamma(gpShape/gpMean, 1)
-	# genPos <- gpa/(gpa+gpb)
-
 	genShape ~ dgamma(gsShape, gsShape/gsMean)
 
-	# Pre-observation and kernel
 	for (j in 1:lag){
-		preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1, genShape/genPos)
+		preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1,
+			genShape/genPos)
 		ker[j] <- R0*preker[j]/sum(preker)
 		preInc[j] ~ dexp(preExp)
 	}
 
+	# Observation period
 	for (j in 1:max){
 		# _FOICHAIN_ is a magic word that's expanded in the autobug
 		## foi is the expected number _reported_. 
@@ -48,6 +45,7 @@ model{
 		obs[j] ~ dpois(obsMean[j])
 	}
 
+	# Updates that are consistent over both periods
 	for(j in 1:(lag+max)){
 		S[j+1] <- foieps + S[j] - inc[j]/repMean
 
@@ -55,5 +53,6 @@ model{
 			(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa)) 
 	}
 
+	# Summary parameters
 	gen <- inprod(lagvec, ker)/R0
 }

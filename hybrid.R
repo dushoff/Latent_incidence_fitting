@@ -30,7 +30,8 @@ data <- list ("obs", "max", "lag", "lagvec", "pop"
 inits <- lapply (mult, function(m){
 	pre <- 1+obs[[1]]
 	return(list(
-		effRep = maxRep/m
+		genPos = gpMean
+		, effRep = maxRep/m
 		, preInc = c(
 			rep(pre, lag)
 			, 1+obs
