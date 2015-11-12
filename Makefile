@@ -92,7 +92,7 @@ T2.%.hybrid.Rout: hybrid.params.Rout T2.hybrid.params.Rout T2.%.hybrid.params.Ro
 	$(run-R)
 
 .PRECIOUS: T3.%.hybrid.Rout
-T3.%.hybrid.Rout: T3.hybrid.params.Rout T3.%.hybrid.params.Rout T3.%.scen.Rout hybrid5.autobug hybrid.R
+T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
 ##################################################################
