@@ -70,35 +70,22 @@ update_data: T3.NIH1.scen.Rout T3.NIH2.scen.Rout T3.NIH3.scen.Rout T3.NIH4.scen.
 
 ##################################################################
 
-# het takes the R <- R0 S^α approach to changing transmission through time
+# het takes the R <- R0 S^α approach to changing transmission through time. Doesn't mix well, and it's kind of a backwater.
 
 .PRECIOUS: %.het.Rout
 %.het.Rout: het.params.Rout %.het.params.Rout %.scen.Rout het5.autobug het.R
 	$(run-R)
-
-NIH.het.pdf: NIH1.het.Rout.pdf NIH2.het.Rout.pdf NIH3.het.Rout.pdf NIH4.het.Rout.pdf
-	pdftk $^ cat output $@
-.PRECIOUS: T2.%.hybrid.Rout
-T2.%.hybrid.Rout: T2.hybrid.params.Rout T2.%.hybrid.params.Rout T2.%.scen.Rout hybrid5.autobug hybrid.R
-	$(run-R)
-
-
-OLD.het.pdf: OLD1.het.Rout.pdf OLD2.het.Rout.pdf OLD3.het.Rout.pdf OLD4.het.Rout.pdf
-	pdftk $^ cat output $@
-
-OLD.het.output: OLD2.het.Routput OLD2.het.Routput OLD3.het.Routput OLD4.het.Routput
-	cat $^ > $@
 
 ##################################################################
 
 # hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
 
 .PRECIOUS: T1.%.hybrid.Rout
-T1.%.hybrid.Rout: T1.hybrid.params.Rout T1.%.hybrid.params.Rout T1.%.scen.Rout hybrid5.autobug hybrid.R
+T1.%.hybrid.Rout: hybrid.params.Rout T1.hybrid.params.Rout T1.%.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
 .PRECIOUS: T2.%.hybrid.Rout
-T2.%.hybrid.Rout: T2.hybrid.params.Rout T2.%.hybrid.params.Rout T2.%.scen.Rout hybrid5.autobug hybrid.R
+T2.%.hybrid.Rout: hybrid.params.Rout T2.hybrid.params.Rout T2.%.hybrid.params.Rout T2.%.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
 .PRECIOUS: T3.%.hybrid.Rout
@@ -134,7 +121,7 @@ T23.%.compare.Rout: T2.%.hybrid.est.Rout T3.%.scen.Rout forecastPlot.Rout compar
 
 ######################################################################
 
-### Make combined pdf files
+### Make combined pdf files (not precious, is that a problem?)
 
 T1.NIH.%.pdf: T1.NIH1.%.Rout.pdf T1.NIH2.%.Rout.pdf T1.NIH3.%.Rout.pdf T1.NIH4.%.Rout.pdf
 	$(PDFCAT)
