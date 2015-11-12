@@ -12,4 +12,6 @@ gitroot = ../
 
 export ms = $(gitroot)/makestuff
 
+### Stuff that belongs in makestuff, but we don't want to make people download t again now
 READONLY = chmod a-w $@
+PDFCAT = pdftk $(filter %.pdf, $^)  cat output $@

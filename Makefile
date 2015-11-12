@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T2.NIH1.hybrid.Rout 
+target pngtarget pdftarget vtarget acrtarget: T1.NIH.project.Rout 
 
 ##################################################################
 
@@ -61,7 +61,6 @@ NIH%.scen.Rout: $(data)/NIH%/country_confirmed.csv scen.R
 T1.NIH%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
-#TEMP
 .PRECIOUS: T2.NIH%.scen.Rout
 T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/country_confirmed.csv scen.R
 	$(run-R)
@@ -104,24 +103,25 @@ OLD.het.output: OLD2.het.Routput OLD2.het.Routput OLD3.het.Routput OLD4.het.Rout
 
 # hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
 
-T2.NIH1.hybrid.Rout: hybrid.bugtmp hybrid.params.R hybrid.R
-
 .PRECIOUS: %.hybrid.Rout
 %.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
-NIH.hybrid.pdf: NIH1.hybrid.Rout.pdf NIH2.hybrid.Rout.pdf NIH3.hybrid.Rout.pdf NIH4.hybrid.Rout.pdf
-	pdftk $^ cat output $@
+##################################################################
 
-OLD.hybrid.pdf: OLD1.hybrid.Rout.pdf OLD2.hybrid.Rout.pdf OLD3.hybrid.Rout.pdf OLD4.hybrid.Rout.pdf
-	pdftk $^ cat output $@
+### Look at projections 
 
-OLD.hybrid.output: OLD2.hybrid.Routput OLD2.hybrid.Routput OLD3.hybrid.Routput OLD4.hybrid.Routput
-	cat $^ > $@
+T2.NIH.project.Rout: project.R
+%.project.Rout: %.hybrid.Rout project.R
+	$(run-R)
+
+T1.NIH.project.Rout: project.R
+%.project.Rout: %.hybrid.Rout project.R
+	$(run-R)
 
 ##################################################################
 
-### Look at old projections with new data
+### Compare projections with new data
 .PRECIOUS: first%.projtest.Rout
 first%.projtest.Rout: OLD%.het.Rout NIH%.scen.Rout projtest.R
 	$(run-R)
@@ -131,18 +131,13 @@ first.projtest.pdf: first1.projtest.Rout.pdf first2.projtest.Rout.pdf first3.pro
 
 ######################################################################
 
-### Look at projections in general
+### Make combined pdf files
 
-## CURR
-NIH3.project.Rout: project.R
+T1.NIH.%.pdf: T1.NIH1.%.Rout.pdf T1.NIH2.%.Rout.pdf T1.NIH3.%.Rout.pdf T1.NIH4.%.Rout.pdf
+	$(PDFCAT)
 
-%.project.Rout: %.hybrid.Rout project.R
-	$(run-R)
-
-NIH.project.pdf: project.R
-
-NIH.%.pdf: NIH1.%.Rout.pdf NIH2.%.Rout.pdf NIH3.%.Rout.pdf NIH4.%.Rout.pdf
-	pdftk $(filter %.pdf, $^)  cat output $@
+T2.NIH.%.pdf: T2.NIH1.%.Rout.pdf T2.NIH2.%.Rout.pdf T2.NIH3.%.Rout.pdf T2.NIH4.%.Rout.pdf
+	$(PDFCAT)
 
 ##################################################################
 

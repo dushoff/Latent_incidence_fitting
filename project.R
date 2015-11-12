@@ -3,7 +3,8 @@ qm <- (1+length(q))/2
 topQuant <- 4
 shortWindow <- 4
 
-scenario <- sub("[.].*", "", rtargetname)
+filetail <- sub("^T.[.]", "", rtargetname)
+scenario <- sub("[.].*", "", filetail)
 
 m <- sim$BUGSoutput$sims.matrix
 est <- t(apply(m, 2, function(v){quantile(v, probs = q)}))
