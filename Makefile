@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T1.NIH.project.Rout 
+target pngtarget pdftarget vtarget acrtarget: T12.NIH.compare.pdf 
 
 ##################################################################
 
@@ -65,24 +65,7 @@ T1.NIH%.scen.Rout: $(data)/NIHx_timepoint_1/NIH%/country_confirmed.csv scen.R
 T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
-######################################################################
-
-# The current version of base.R is a renewal equation machine, with dispersion in both infection and reporting steps. 
-
-.PRECIOUS: %.base.Rout
-%.base.Rout: i5000.Rout %.scen.Rout base5.autobug base.R
-	$(run-R)
-
-NIH.base.pdf: NIH1.base.Rout.pdf NIH2.base.Rout.pdf NIH3.base.Rout.pdf NIH4.base.Rout.pdf
-	pdftk $^ cat output $@
-
-OLD.base.pdf: OLD1.base.Rout.pdf OLD2.base.Rout.pdf OLD3.base.Rout.pdf OLD4.base.Rout.pdf
-	pdftk $^ cat output $@
-
-OLD.base.output: OLD2.base.Routput OLD2.base.Routput OLD3.base.Routput OLD4.base.Routput
-	cat $^ > $@
-
-######################################################################
+##################################################################
 
 # het takes the R <- R0 S^α approach to changing transmission through time
 
@@ -104,30 +87,32 @@ OLD.het.output: OLD2.het.Routput OLD2.het.Routput OLD3.het.Routput OLD4.het.Rout
 # hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
 
 .PRECIOUS: %.hybrid.Rout
-%.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout hybrid5.autobug hybrid.R
+T1.%.hybrid.Rout: hybrid1.params.Rout %.hybrid.params.Rout %.scen.Rout hybrid5.autobug hybrid.R
+	$(run-R)
+
+T2.%.hybrid.Rout: hybrid.params.Rout %.hybrid.params.Rout %.scen.Rout hybrid5.autobug hybrid.R
+	$(run-R)
+
+##################################################################
+
+### Calculate estimation quantiles
+
+%.est.Rout: %.Rout quantiles.R
 	$(run-R)
 
 ##################################################################
 
 ### Look at projections 
 
-T2.NIH.project.Rout: project.R
-%.project.Rout: %.hybrid.Rout project.R
-	$(run-R)
-
-T1.NIH.project.Rout: project.R
-%.project.Rout: %.hybrid.Rout project.R
+.PRECIOUS: %.project.Rout
+%.project.Rout: %.hybrid.est.Rout forecastPlot.Rout project.R
 	$(run-R)
 
 ##################################################################
 
 ### Compare projections with new data
-.PRECIOUS: first%.projtest.Rout
-first%.projtest.Rout: OLD%.het.Rout NIH%.scen.Rout projtest.R
+T12.%.compare.Rout: T1.%.hybrid.est.Rout T2.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
-
-first.projtest.pdf: first1.projtest.Rout.pdf first2.projtest.Rout.pdf first3.projtest.Rout.pdf first4.projtest.Rout.pdf
-	pdftk $^ cat output $@
 
 ######################################################################
 
@@ -138,6 +123,11 @@ T1.NIH.%.pdf: T1.NIH1.%.Rout.pdf T1.NIH2.%.Rout.pdf T1.NIH3.%.Rout.pdf T1.NIH4.%
 
 T2.NIH.%.pdf: T2.NIH1.%.Rout.pdf T2.NIH2.%.Rout.pdf T2.NIH3.%.Rout.pdf T2.NIH4.%.Rout.pdf
 	$(PDFCAT)
+
+T12.NIH.%.pdf: T12.NIH1.%.Rout.pdf T12.NIH2.%.Rout.pdf T12.NIH3.%.Rout.pdf T12.NIH4.%.Rout.pdf
+	$(PDFCAT)
+
+T12.NIH.compare.pdf:
 
 ##################################################################
 
