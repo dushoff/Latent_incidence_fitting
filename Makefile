@@ -50,6 +50,9 @@ data = $(gitroot)/techtex-ebola/Data
 
 ### Don't like this rule, but I need a uniform name because of make bugs!
 ### This rule doesn't work on yushan either!, save the target files in the techtex repo
+
+NIHsets: T1.NIH1.scen.Rout T1.NIH2.scen.Rout T1.NIH3.scen.Rout T1.NIH4.scen.Rout T2.NIH1.scen.Rout T2.NIH2.scen.Rout T2.NIH3.scen.Rout T2.NIH4.scen.Rout
+
 .PRECIOUS: %/country_confirmed.csv
 %/country_confirmed.csv: %/*confirmed*country*.csv
 	/bin/cp $< $@
