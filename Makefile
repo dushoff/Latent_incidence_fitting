@@ -97,6 +97,26 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 
 ##################################################################
 
+# hi represents hybrid with interventions. Under development.
+
+T1.NIH1.hi.Rout:
+
+.PRECIOUS: T1.%.hi.Rout
+T1.%.hi.Rout: hi.params.Rout T1.hi.params.Rout T1.%.scen.Rout hi5.autobug hi.R
+	$(run-R)
+
+.PRECIOUS: T2.%.hi.Rout
+T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout hi5.autobug hi.R
+	$(run-R)
+
+.PRECIOUS: T3.%.hi.Rout
+T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.scen.Rout hi5.autobug hi.R
+	$(run-R)
+
+##################################################################
+
+
+
 ### Calculate estimation quantiles
 
 %.est.Rout: %.Rout quantiles.R
