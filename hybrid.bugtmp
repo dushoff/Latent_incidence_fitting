@@ -19,8 +19,7 @@ model{
 	genShape ~ dgamma(gsShape, gsShape/gsMean)
 
 	for (j in 1:lag){
-		preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1,
-			genShape/genPos)
+		preker[j] <- pow(j, genShape-1)*exp(-j/(genPos*lag))
 		ker[j] <- R0*preker[j]/sum(preker)
 		preInc[j] ~ dexp(preExp)
 	}

@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: update_data 
+target pngtarget pdftarget vtarget acrtarget: T2.NIH2.hybrid.Rout 
 
 ##################################################################
 
@@ -81,6 +81,8 @@ update_data: T3.NIH1.scen.Rout T3.NIH2.scen.Rout T3.NIH3.scen.Rout T3.NIH4.scen.
 
 ##################################################################
 
+T2.NIH2.hybrid.Rout: hybrid.params.R hybrid.bugtmp hybrid.R
+
 # hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
 
 .PRECIOUS: T1.%.hybrid.Rout
@@ -99,7 +101,7 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 
 # hi represents hybrid with interventions. Under development.
 
-T1.NIH1.hi.Rout:
+T1.NIH1.hi.Rout: hi.params.Rout T1.hi.params.Rout T1.%.scen.Rout hi5.autobug hi.R
 
 .PRECIOUS: T1.%.hi.Rout
 T1.%.hi.Rout: hi.params.Rout T1.hi.params.Rout T1.%.scen.Rout hi5.autobug hi.R
