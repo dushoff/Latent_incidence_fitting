@@ -56,6 +56,8 @@ inits <- list(list(genPos = gpMean
               , R0=1
               , genShape=1
               , obsMean=c(obs,forecastobs)
+              , preker=c(1,2,3,4,5)
+              , ker=c(1,2,3,4,5)
               ))
 
 sim <- jags(model.file="mikehybrid.bug",

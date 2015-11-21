@@ -65,8 +65,16 @@ genShape ~ gamma(gsShape, gsShape/gsMean);
 
 for (j in 1:lag){
   preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1,genShape/genPos);
+  preInc[j] ~ exponential(preExp);
+}
+for (j in 1:lag){
 	ker[j] <- R0*preker[j]/sum(preker);
-	preInc[j] ~ exponential(preExp);
+	print("preker=",preker,", ker=", ker, ", preInc=",preInc);
+}
+# Updates that are consistent over both periods
+for(j in 1:(lag+numobs)){
+  inc[j] <- foieps + S[j]*repMean*(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa));
+  S[j+1] <- foieps + S[j] - inc[j]/repMean;
 }
 
 # Observation period
@@ -74,7 +82,7 @@ for (j in 1:numobs){
 	foi[j] <- (ker[1]*inc[j+4] + ker[2]*inc[j+3] + ker[3]*inc[j+2] + ker[4]*inc[j+1] + ker[5]*inc[j+0])*pow(S[lag+j]/S[1], 1+alpha)+foieps;
 
   preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean);
-  print("incShape=",incShape,", foi=",foi,", repMean=",repMean);
+//  print("incShape=",incShape,", foi=",foi,", repMean=",repMean);
 	preInc[lag+j] ~ gamma(preIncShape[j], preIncShape[j]/foi[j]);
 
 # Observation process
@@ -82,11 +90,6 @@ obsMean[j] ~ gamma(repShape, repShape/inc[lag+j]);
 obs[j] ~ poisson(obsMean[j]);
 }
 
-# Updates that are consistent over both periods
-for(j in 1:(lag+numobs)){
-  S[j+1] <- foieps + S[j] - inc[j]/repMean;
-  inc[j] <- foieps + S[j]*repMean*(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa)); 
-}
 
 for(j in 1:forecastnum){
   S[lag+numobs+j+1] <- foieps + S[numobs+lag+j] - inc[j+lag+numobs]/repMean;
