@@ -22,9 +22,9 @@ real<lower=0> gsMean; //gamma parameter for genShape
 }
 parameters{
 real<lower=0> genPos;
+real<lower=0> forecastobs[forecastnum];
 real<lower=0> genShape;
 real<lower=0> effRep;
-int<lower=0> forecastobs[forecastnum];
 real<lower=0> preInc[forecastnum+lag+numobs];
 real<lower=0> alpha;
 real<lower=0> repShape;
@@ -34,6 +34,7 @@ real<lower=0> R0;
 real<lower=0> obsMean[numobs+forecastnum];
 }
 model{
+real gen;
 real effProp;
 real repMean;
 vector[lag+numobs+forecastnum] S;
@@ -42,6 +43,7 @@ vector[lag] preker;
 vector[lag] ker;
 vector[numobs+forecastnum] foi;
 vector[numobs+forecastnum] preIncShape;
+//vector[forecastnum] forecastobs;
   # Dispersion
 repShape ~ gamma(shapeH, shapeH);
 incShape ~ gamma(shapeH, shapeH);
@@ -72,6 +74,7 @@ for (j in 1:numobs){
 	foi[j] <- (ker[1]*inc[j+4] + ker[2]*inc[j+3] + ker[3]*inc[j+2] + ker[4]*inc[j+1] + ker[5]*inc[j+0])*pow(S[lag+j]/S[1], 1+alpha)+foieps;
 
   preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean);
+  print("incShape=",incShape,", foi=",foi,", repMean=",repMean);
 	preInc[lag+j] ~ gamma(preIncShape[j], preIncShape[j]/foi[j]);
 
 # Observation process
@@ -96,13 +99,11 @@ for(j in 1:forecastnum){
   
   
   obsMean[numobs+j] ~ gamma(repShape, repShape/inc[numobs+lag+j]);
-  forecastobs[j] ~ poisson(obsMean[numobs+j]);
+  forecastobs[j] ~ gamma(obsMean[numobs+j],1);
 }
 
 # Summary parameters
-gen <- inprod(lagvec, ker)/R0
-
-
-  
+gen <- (lagvec[1]*ker[1]+lagvec[2]*ker[2]+lagvec[3]*ker[3]+
+        lagvec[4]*ker[4]+lagvec[5]*ker[5])/R0;
 }
 

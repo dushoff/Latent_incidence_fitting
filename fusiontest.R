@@ -46,7 +46,7 @@ data <- list (obs=obs
 
 pre <- 1+obs[[1]]
 inits <- list(list(genPos = gpMean
-              , effRep = numobsRep
+              , effRep = maxRep
               , forecastobs = forecastobs
               , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
               , repShape=1
@@ -70,6 +70,6 @@ sim <- jags(model.file="mikehybrid.bug",
 )
 
 sim2 <- stan(file="hybrid.stan",data=data,init=inits,
-             pars=c("obs","forecastobs"),
+             pars=c("forecastobs"),
              iter=4000,
              chains=1)
