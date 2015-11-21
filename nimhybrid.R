@@ -1,5 +1,5 @@
 require(nimble)
-
+#Setup -----
 load('hybrid.params.RData')
 load('T3.hybrid.params.RData')
 load('T3.NIH3.scen.RData')
@@ -12,6 +12,8 @@ effRepHb <- effRepHShape/effRepHmean
 preExp <- preMean/(lag+preMean)
 
 max <- length(obs)
+
+#creating the data/inits/constants -----
 data <- list (obs=obs)
 
 pre <- 1+obs[[1]]
@@ -47,16 +49,22 @@ constants <- list(lag=lag
                   ,shapeH=shapeH
                   ,lagvec=lagvec)
 
+#nimble fit/mcmc ----
+
+#it won't build the model, skip MCMCsuite first and try to build in nimble.
+
 hybridMCMC <- MCMCsuite(code=nimcode,
                         data=data,
                         inits=inits,
                         constants=constants,
                         monitors=c('genPos'),
-                        niter=3000,
-                        MCMCs=c("jags","nimble"),
+                        niter=9000,
+                        MCMCs=c("jags"),
                         makePlot=TRUE,
                         savePlot=TRUE)
 
-mod <- nimbleModel(code=nimcode, data=data, inits=inits, constants=constants)
 
-modmcmc <- buildMCMC(mod)
+
+# mod <- nimbleModel(code=nimcode, data=data, inits=inits, constants=constants)
+# 
+# modmcmc <- buildMCMC(mod)
