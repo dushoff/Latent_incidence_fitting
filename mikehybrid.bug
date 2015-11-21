@@ -53,7 +53,7 @@ for(j in 1:forecastnum){
   
   
   obsMean[max+j] ~ dgamma(repShape, repShape/inc[max+lag+j])
-  forcastobs[j] ~ dpois(obsMean[max+j])
+  forecastobs[j] ~ dpois(obsMean[max+j])
 }
 
 # Summary parameters

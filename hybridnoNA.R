@@ -49,7 +49,7 @@ sim <- jags(model.file=input_files[[1]],
             parameters = c("ker", "R0", "gen"
                            , "repMean"
                            , "effRep", "RRprop", "alpha"
-                           , "obs", "forcastobs"
+                           , "obs", "forecastobs"
                            , "inc", "preInc", "foi"
             ),
             n.chains = length(mult), n.iter = iterations
