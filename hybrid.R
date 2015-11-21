@@ -15,7 +15,7 @@ effRepHb <- effRepHShape/effRepHmean
 
 preExp <- preMean/(lag+preMean)
 
-data <- list ("obs", "max", "lag", "lagvec", "pop"
+data <- list ("obs", "max","lag", "lagvec", "pop"
 	, "foieps"
 	, "kappa"
 	, "effRepHa", "effRepHb"
