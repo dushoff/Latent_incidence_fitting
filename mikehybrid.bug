@@ -1,0 +1,61 @@
+model{
+# Dispersion
+repShape ~ dgamma(shapeH, shapeH)
+incShape ~  dgamma(shapeH, shapeH)
+
+# Effective population size and response
+alpha ~ dgamma(hetShape, hetShape/hetMean)
+effRep ~ dbeta(effRepHa, effRepHb)
+RRprop ~ dunif(0, 1)
+effProp <- pow(effRep,1-RRprop)
+repMean <- pow(effRep,RRprop)
+
+S[1] <- effProp*pop
+
+# Kernel and pre-observation period
+R0 ~ dgamma(Rshape, Rshape/Rmean)
+
+genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
+genShape ~ dgamma(gsShape, gsShape/gsMean)
+
+for (j in 1:lag){
+  preker[j] <- pow(j, genShape/(1-genPos))*pow(lag-j+1,genShape/genPos)
+	ker[j] <- R0*preker[j]/sum(preker)
+	preInc[j] ~ dexp(preExp)
+}
+
+# Observation period
+for (j in 1:max){
+	foi[j] <- (ker[1]*inc[j+4] + ker[2]*inc[j+3] + ker[3]*inc[j+2] + ker[4]*inc[j+1] + ker[5]*inc[j+0])*pow(S[lag+j]/S[1], 1+alpha)+foieps
+
+  preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean)
+	preInc[lag+j] ~ dgamma(preIncShape[j], preIncShape[j]/foi[j])
+
+# Observation process
+obsMean[j] ~ dgamma(repShape, repShape/inc[lag+j])
+obs[j] ~ dpois(obsMean[j])
+}
+
+# Updates that are consistent over both periods
+for(j in 1:(lag+max)){
+  S[j+1] <- foieps + S[j] - inc[j]/repMean
+  inc[j] <- foieps + S[j]*repMean*(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa)) 
+}
+
+for(j in 1:forecastnum){
+  S[lag+max+j+1] <- foieps + S[max+lag+j] - inc[j+lag+max]/repMean
+  inc[lag+max+j] <- foieps + S[lag+max+j]*repMean*(1 - pow(1+preInc[lag+max+j]/(S[lag+max+j]*repMean*kappa), -kappa))
+  
+  foi[max+j] <- (ker[1]*inc[max+j+4] + ker[2]*inc[max+j+3] + ker[3]*inc[max+j+2] + ker[4]*inc[max+j+1] + ker[5]*inc[max+j+0])*pow(S[max+lag+j]/S[1], 1+alpha)+foieps
+
+  preIncShape[max+j] <- (incShape*foi[max+j]/repMean)/(incShape+foi[max+j]/repMean)
+	preInc[max+lag+j] ~ dgamma(preIncShape[max+j], preIncShape[max+j]/foi[max+j])
+  
+  
+  obsMean[max+j] ~ dgamma(repShape, repShape/inc[max+lag+j])
+  forcastobs[j] ~ dpois(obsMean[max+j])
+}
+
+# Summary parameters
+gen <- inprod(lagvec, ker)/R0
+}
