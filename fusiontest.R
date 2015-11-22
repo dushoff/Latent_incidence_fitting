@@ -60,16 +60,16 @@ inits <- list(list(genPos = gpMean
               , ker=c(1,2,3,4,5)
               ))
 
-sim <- jags(model.file="mikehybrid.bug",
-            data=data, inits=inits, 
-            parameters = c("ker", "R0", "gen"
-                           , "repMean"
-                           , "effRep", "RRprop", "alpha"
-                           , "obs", "forecastobs"
-                           , "inc", "preInc", "foi"
-            ),
-            n.chains = 1, n.iter = 4000
-)
+# sim <- jags(model.file="mikehybrid.bug",
+#             data=data, inits=inits, 
+#             parameters = c("ker", "R0", "gen"
+#                            , "repMean"
+#                            , "effRep", "RRprop", "alpha"
+#                            , "obs", "forecastobs"
+#                            , "inc", "preInc", "foi"
+#             ),
+#             n.chains = 1, n.iter = 4000
+# )
 
 sim2 <- stan(file="hybrid.stan",data=data,init=inits,
              pars=c("forecastobs"),
