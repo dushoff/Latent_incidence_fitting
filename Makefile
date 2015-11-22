@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T2.NIH1.hi.Rout 
+target pngtarget pdftarget vtarget acrtarget: T3.NIH1.hi.Rout 
 
 ##################################################################
 
@@ -75,18 +75,14 @@ T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/country_confirmed.csv scen.R
 T3.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
-.PRECIOUS: T1.NIH%.int.Rout
-T1.NIH%.int.Rout: $(data)/NIHx_timepoint_1/NIH%/interventions.Rout int.R
-	$(run-R)
-
+update_data: T3.NIH1.scen.Rout T3.NIH2.scen.Rout T3.NIH3.scen.Rout T3.NIH4.scen.Rout
 
 ##################################################################
 
-# A bunch of silly rules whose real purpose is to copy the int.Rout information to here
+# Silly rules whose real purpose is to copy the intervention from techtex
 
-# T2.NIH1.int.Rout: int.R
-T2.NIH%.int.Rout: $(data)/NIHx_timepoint_2/NIH%/interventions.Rout int.R
-	$(run-R)
+$(data)/%/interventions.Rout:
+	cd $(data) && $(MAKE) $*/interventions.Rout
 
 .PRECIOUS: T2.NIH%.int.Rout
 T2.NIH%.int.Rout: $(data)/NIHx_timepoint_2/NIH%/interventions.Rout int.R
@@ -95,8 +91,6 @@ T2.NIH%.int.Rout: $(data)/NIHx_timepoint_2/NIH%/interventions.Rout int.R
 .PRECIOUS: T3.NIH%.int.Rout
 T3.NIH%.int.Rout: $(data)/NIHx_timepoint_3/NIH%/interventions.Rout int.R
 	$(run-R)
-
-update_data: T3.NIH1.scen.Rout T3.NIH2.scen.Rout T3.NIH3.scen.Rout T3.NIH4.scen.Rout
 
 ##################################################################
 
@@ -128,16 +122,20 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 
 # hi represents hybrid with interventions. Under development.
 
-T2.NIH1.hi.Rout: hi.params.R hi.bugtmp hi.R
-
-T2.NIH1.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.NIH1.hi.params.Rout T2.NIH1.scen.Rout T2.NIH1.int.Rout hi5.autobug hi.R
-	$(run-R)
-
 .PRECIOUS: T2.%.hi.Rout
 T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.int.Rout hi5.autobug hi.R
 	$(run-R)
 
+.PRECIOUS: T3.%.hi.Rout
+T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
+	$(run-R)
+
 ##################################################################
+
+### Front page of a fitting pdf
+
+%.front.Rout.pdf: %.Rout.pdf
+	$(PDFFRONT)
 
 ### Calculate estimation quantiles
 
@@ -150,6 +148,10 @@ T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rou
 
 .PRECIOUS: %.project.Rout
 %.project.Rout: %.hybrid.est.Rout forecastPlot.Rout project.R
+	$(run-R)
+
+.PRECIOUS: %.hip.Rout
+%.hip.Rout: %.hi.est.Rout forecastPlot.Rout project.R
 	$(run-R)
 
 ##################################################################

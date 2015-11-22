@@ -1,7 +1,10 @@
+Predictions
+===========
+
+Make out/ subdirectory structure
+
 Structure
 =========
-
-* Incorporate intervention
 
 * Figure out how to qsub on yushan
 
@@ -10,7 +13,7 @@ Structure
 Try to improve mixing
 =====================
 
-* OK for now
+* Why does the littleR trick not seem to work? How can the kernel mixing be improved?
 
 Model
 ========

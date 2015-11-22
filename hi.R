@@ -49,11 +49,13 @@ print(inits)
 
 sim <- jags(model.file=input_files[[1]],
 	data=data, inits=inits, 
-	parameters = c("ker", "R0", "gen"
-		, "repMean"
-		, "effRep", "RRprop", "alpha"
+	parameters = c("R0", "gen"
+		# , "ker"
+		, "effRep", "alpha"
+		# , "repMean", "RRprop"
+		, "ETUEff", "BurEff", "TracEff"
 		, "obs"
-		, "inc", "preInc", "foi"
+		# , "inc", "preInc", "foi"
 	),
 	n.chains = length(mult), n.iter = iterations
 )
