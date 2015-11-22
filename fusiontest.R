@@ -7,7 +7,7 @@ load('T3.NIH3.scen.RData')
 
 
 set.seed(seed)
-
+forecast=4
 if(forecast>0) forecastobs <- c(rep(1, forecast))
 
 numobs <- length(obs)
@@ -73,5 +73,5 @@ sim <- jags(model.file="mikehybrid.bug",
 
 sim2 <- stan(file="hybrid.stan",data=data,init=inits,
              pars=c("forecastobs"),
-             iter=4000,
+             iter=500,
              chains=1)

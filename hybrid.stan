@@ -21,10 +21,10 @@ real<lower=0> gsShape; //gamma shape parameter for genShape
 real<lower=0> gsMean; //gamma parameter for genShape
 }
 parameters{
-real<lower=0> genPos;
+real<lower=0,upper=1> genPos;
 real<lower=0> forecastobs[forecastnum];
 real<lower=0> genShape;
-real<lower=0> effRep;
+real<lower=0,upper=1> effRep;
 real<lower=0> preInc[forecastnum+lag+numobs];
 real<lower=0> alpha;
 real<lower=0> repShape;
@@ -37,7 +37,7 @@ model{
 real gen;
 real effProp;
 real repMean;
-vector[lag+numobs+forecastnum] S;
+vector[lag+numobs+forecastnum+1] S;
 vector[lag+numobs+forecastnum] inc;
 vector[lag] preker;
 vector[lag] ker;
@@ -69,8 +69,8 @@ for (j in 1:lag){
 }
 for (j in 1:lag){
 	ker[j] <- R0*preker[j]/sum(preker);
-	print("preker=",preker,", ker=", ker, ", preInc=",preInc);
-}
+	}
+
 # Updates that are consistent over both periods
 for(j in 1:(lag+numobs)){
   inc[j] <- foieps + S[j]*repMean*(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa));
@@ -82,7 +82,6 @@ for (j in 1:numobs){
 	foi[j] <- (ker[1]*inc[j+4] + ker[2]*inc[j+3] + ker[3]*inc[j+2] + ker[4]*inc[j+1] + ker[5]*inc[j+0])*pow(S[lag+j]/S[1], 1+alpha)+foieps;
 
   preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean);
-//  print("incShape=",incShape,", foi=",foi,", repMean=",repMean);
 	preInc[lag+j] ~ gamma(preIncShape[j], preIncShape[j]/foi[j]);
 
 # Observation process
@@ -90,16 +89,17 @@ obsMean[j] ~ gamma(repShape, repShape/inc[lag+j]);
 obs[j] ~ poisson(obsMean[j]);
 }
 
-
 for(j in 1:forecastnum){
-  S[lag+numobs+j+1] <- foieps + S[numobs+lag+j] - inc[j+lag+numobs]/repMean;
-  inc[lag+numobs+j] <- foieps + S[lag+numobs+j]*repMean*(1 - pow(1+preInc[lag+numobs+j]/(S[lag+numobs+j]*repMean*kappa), -kappa));
   
   foi[numobs+j] <- (ker[1]*inc[numobs+j+4] + ker[2]*inc[numobs+j+3] + ker[3]*inc[numobs+j+2] + ker[4]*inc[numobs+j+1] + ker[5]*inc[numobs+j+0])*pow(S[numobs+lag+j]/S[1], 1+alpha)+foieps;
 
   preIncShape[numobs+j] <- (incShape*foi[numobs+j]/repMean)/(incShape+foi[numobs+j]/repMean);
+  
 	preInc[numobs+lag+j] ~ gamma(preIncShape[numobs+j], preIncShape[numobs+j]/foi[numobs+j]);
   
+  inc[lag+numobs+j] <- foieps + S[lag+numobs+j]*repMean*(1 - pow(1+preInc[lag+numobs+j]/(S[lag+numobs+j]*repMean*kappa), -kappa));
+  
+  S[lag+numobs+j+1] <- foieps + S[numobs+lag+j] - inc[j+lag+numobs]/repMean;
   
   obsMean[numobs+j] ~ gamma(repShape, repShape/inc[numobs+lag+j]);
   forecastobs[j] ~ gamma(obsMean[numobs+j],1);
