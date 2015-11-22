@@ -28,9 +28,9 @@ data <- with(interventions, list (
 	, gpMean = gpMean
 	, gsShape = gsShape
 	, gsMean = gsMean
-   # , Burial = Burial
-   # , ETU = ETU
-	# , Tracing = Tracing
+   , Burial = Burial, BurMean=BurMean, BurShape=BurShape
+   , ETU = ETU, ETUmean=ETUmean, ETUshape=ETUshape
+	, Tracing = Tracing, TracMean=TracMean, TracShape=TracShape
 ))
 
 inits <- lapply (mult, function(m){

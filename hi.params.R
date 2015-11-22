@@ -33,3 +33,11 @@ kappa <- 3
 
 mult <- 1:4
 maxRep <- 0.75
+
+# Interventions
+BurShape <- 1
+BurMean <- 0.2
+ETUshape <- 1
+ETUmean <- 1
+TracShape <- 0.5
+TracMean <- 0.5

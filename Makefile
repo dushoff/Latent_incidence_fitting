@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T2.NIH2.hybrid.Rout 
+target pngtarget pdftarget vtarget acrtarget: T2.NIH1.hi.Rout 
 
 ##################################################################
 
@@ -128,7 +128,7 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 
 # hi represents hybrid with interventions. Under development.
 
-# T2.NIH1.hi.Rout: hi.params.R T2.NIH1.scen.Rout T2.NIH1.int.Rout hi.bugtmp hi.R
+T2.NIH1.hi.Rout: hi.params.R hi.bugtmp hi.R
 
 T2.NIH1.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.NIH1.hi.params.Rout T2.NIH1.scen.Rout T2.NIH1.int.Rout hi5.autobug hi.R
 	$(run-R)
