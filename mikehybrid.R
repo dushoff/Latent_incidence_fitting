@@ -1,4 +1,4 @@
-
+require(R2jags)
 set.seed(seed)
 forecast=4
 if(forecast>0) forecastobs <- c(rep(1, forecast))
@@ -61,3 +61,6 @@ sim <- jags(model.file="mikehybrid.bug",
             ),
             n.chains = 1, n.iter = 4000
 )
+
+print(sim)
+

@@ -51,7 +51,9 @@ inits <- list(list(genPos = gpMean
                    , obsMean=c(obs,forecastobs)
 ))
 # hybrid stan----
-sim2 <- stan(file="hybrid.stan",data=data,init=inits,
+sim <- stan(file="hybrid.stan",data=data,init=inits,
              pars=c("forecastobs"),
              iter=500,
              chains=1)
+
+print(sim2)

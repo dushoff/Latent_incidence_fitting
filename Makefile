@@ -97,6 +97,42 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 
 ##################################################################
 
+
+# Mikehybrid is meant to be like hybrid, it uses double connecting for loop instead of the NA trick
+
+.PRECIOUS: T1.%.mikehybrid.Rout
+T1.%.mikehybrid.Rout: hybrid.params.Rout T1.hybrid.params.Rout T1.%.scen.Rout mikehybrid.bug mikehybrid.R
+	$(run-R)
+
+.PRECIOUS: T2.%.mikehybrid.Rout
+T2.%.mikehybrid.Rout: hybrid.params.Rout T2.hybrid.params.Rout T2.%.hybrid.params.Rout T2.%.scen.Rout mikehybrid.bug mikehybrid.R
+	$(run-R)
+
+.PRECIOUS: T3.%.mikehybrid.Rout
+T3.%.mikehybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout mikehybrid.bug mikehybrid.R
+	$(run-R)
+
+##################################################################
+
+
+##################################################################
+
+
+# Mikehybrid is meant to be like hybrid, it uses double connecting for loop instead of the NA trick
+
+.PRECIOUS: T1.%.mikehybridstan.Rout
+T1.%.mikehybridstan.Rout: hybrid.params.Rout T1.hybrid.params.Rout T1.%.scen.Rout hybrid.stan mikehybridstan.R
+	$(run-R)
+
+.PRECIOUS: T2.%.mikehybridstan.Rout
+T2.%.mikehybridstan.Rout: hybrid.params.Rout T2.hybrid.params.Rout T2.%.hybrid.params.Rout T2.%.scen.Rout hybrid.stan mikehybridstan.R
+	$(run-R)
+
+.PRECIOUS: T3.%.mikehybridstan.Rout
+T3.%.mikehybridstan.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid.stan mikehybridstan.R
+	$(run-R)
+
+
 ### Calculate estimation quantiles
 
 %.est.Rout: %.Rout quantiles.R
