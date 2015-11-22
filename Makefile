@@ -123,7 +123,7 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 # hi represents hybrid with interventions. Under development.
 
 .PRECIOUS: T2.%.hi.Rout
-T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.int.Rout hi5.autobug hi.R
+T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 .PRECIOUS: T3.%.hi.Rout
