@@ -1,9 +1,3 @@
-require(R2jags)
-#Setup via make please  -----
-load('hybrid.params.RData')
-load('T3.hybrid.params.RData')
-load('T3.NIH3.scen.RData')
-
 
 set.seed(seed)
 forecast=4
@@ -45,17 +39,17 @@ data <- list (obs=obs
 
 pre <- 1+obs[[1]]
 inits <- list(list(genPos = gpMean
-              , effRep = maxRep
-              , forecastobs = forecastobs
-              , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
-              , repShape=1
-              , incShape=1
-              , alpha=1
-              , RRprop=0.5
-              , R0=1
-              , genShape=1
-              , obsMean=c(obs,forecastobs)
-              ))
+                   , effRep = maxRep
+                   , forecastobs = forecastobs
+                   , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
+                   , repShape=1
+                   , incShape=1
+                   , alpha=1
+                   , RRprop=0.5
+                   , R0=1
+                   , genShape=1
+                   , obsMean=c(obs,forecastobs)
+))
 # hybrid double forloop jags ----
 sim <- jags(model.file="mikehybrid.bug",
             data=data, inits=inits, 
@@ -67,10 +61,3 @@ sim <- jags(model.file="mikehybrid.bug",
             ),
             n.chains = 1, n.iter = 4000
 )
-
-# hybrid stan----
-require(rstan)
-sim2 <- stan(file="hybrid.stan",data=data,init=inits,
-             pars=c("forecastobs"),
-             iter=500,
-             chains=1)
