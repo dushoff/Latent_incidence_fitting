@@ -15,8 +15,8 @@ shapeH <- 0.1
 
 # Shape for the kernel priors 
 	
-Rshape <- 0.1
-Rmean <- 1
+rshape <- 0.1
+rmean <- 1
 	
 gpMean <- 0.5
 gpShape <- 0.25

@@ -12,6 +12,7 @@ data <- list (
 	, max = length(obs)
 	, lag = lag
 	, lagvec = 1:lag
+	, vvec = (1:lag)^2
 	, pop = pop
 	, foieps = foieps
 	, kappa = kappa
@@ -21,8 +22,8 @@ data <- list (
 	, hetShape = hetShape
 	, hetMean = hetMean
 	, shapeH = shapeH
-	, Rshape = Rshape
-	, Rmean = Rmean
+	, rshape = rshape
+	, rmean = rmean
 	, gpShape = gpShape
 	, gpMean = gpMean
 	, gsShape = gsShape

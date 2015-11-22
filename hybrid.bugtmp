@@ -13,14 +13,19 @@ model{
 	S[1] <- effProp*pop
 
 	# Kernel and pre-observation period
-	R0 ~ dgamma(Rshape, Rshape/Rmean)
+	r0 ~ dgamma(rshape, rshape/rmean)
 
 	genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
 	genShape ~ dgamma(gsShape, gsShape/gsMean)
 
+	g0 <- sum(preker)
+	gen <- inprod(lagvec, preker)/g0
+	k <- inprod(vvec, preker)/(g0*gen^2) - 1
+	R0 <- pow(1+r0*gen*k, 1/k)
+
 	for (j in 1:lag){
 		preker[j] <- pow(j, genShape-1)*exp(-j/(genPos*lag))
-		ker[j] <- R0*preker[j]/sum(preker)
+		ker[j] <- R0*preker[j]/g0
 		preInc[j] ~ dexp(preExp)
 	}
 
@@ -51,7 +56,4 @@ model{
 		inc[j] <- foieps + S[j]*repMean*
 			(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa)) 
 	}
-
-	# Summary parameters
-	gen <- inprod(lagvec, ker)/R0
 }
