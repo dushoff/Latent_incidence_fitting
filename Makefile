@@ -117,8 +117,6 @@ T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.scen.Rout hi5.autobug hi.R
 
 ##################################################################
 
-
-
 ### Calculate estimation quantiles
 
 %.est.Rout: %.Rout quantiles.R
@@ -146,7 +144,9 @@ T23.%.compare.Rout: T2.%.hybrid.est.Rout T3.%.scen.Rout forecastPlot.Rout compar
 
 ######################################################################
 
-### Make combined pdf files (not precious, is that a problem?)
+### Make combined pdf files 
+
+### Main things right now are Tx.hybrid.NIH.pdf (2000 pp., look at Rhats); Tx.project.NIH.pdf
 
 T1.NIH.%.pdf: T1.NIH1.%.Rout.pdf T1.NIH2.%.Rout.pdf T1.NIH3.%.Rout.pdf T1.NIH4.%.Rout.pdf
 	$(PDFCAT)
