@@ -6,8 +6,9 @@ if(forecast>0) obs <- c(obs, rep(NA, forecast))
 
 # Parse the lag out of the model file name (clunky)
 lag <- as.numeric(gsub("[A-Za-z_.]*", "", input_files[1]))
+interventions <- interventions[1:length(obs), ]
 
-data <- list (
+data <- with(interventions, list (
 	obs = obs
 	, max = length(obs)
 	, lag = lag
@@ -30,7 +31,7 @@ data <- list (
    # , Burial = Burial
    # , ETU = ETU
 	# , Tracing = Tracing
-)
+))
 
 inits <- lapply (mult, function(m){
 	pre <- 1+obs[[1]]

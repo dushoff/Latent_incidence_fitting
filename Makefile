@@ -46,6 +46,12 @@ het%.autobug: het.bugtmp lagchain.pl
 	$(PUSHSTAR)
 	$(READONLY)
 
+.PRECIOUS: hi%.autobug
+hi%.autobug: hi.bugtmp lagchain.pl
+	$(RM) $@
+	$(PUSHSTAR)
+	$(READONLY)
+
 data = $(gitroot)/techtex-ebola/Data
 
 ### Don't like this rule, but I need a uniform name because of make bugs!
@@ -67,6 +73,27 @@ T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/country_confirmed.csv scen.R
 
 .PRECIOUS: T3.NIH%.scen.Rout
 T3.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
+	$(run-R)
+
+.PRECIOUS: T1.NIH%.int.Rout
+T1.NIH%.int.Rout: $(data)/NIHx_timepoint_1/NIH%/interventions.Rout int.R
+	$(run-R)
+
+
+##################################################################
+
+# A bunch of silly rules whose real purpose is to copy the int.Rout information to here
+
+# T2.NIH1.int.Rout: int.R
+T2.NIH%.int.Rout: $(data)/NIHx_timepoint_2/NIH%/interventions.Rout int.R
+	$(run-R)
+
+.PRECIOUS: T2.NIH%.int.Rout
+T2.NIH%.int.Rout: $(data)/NIHx_timepoint_2/NIH%/interventions.Rout int.R
+	$(run-R)
+
+.PRECIOUS: T3.NIH%.int.Rout
+T3.NIH%.int.Rout: $(data)/NIHx_timepoint_3/NIH%/interventions.Rout int.R
 	$(run-R)
 
 update_data: T3.NIH1.scen.Rout T3.NIH2.scen.Rout T3.NIH3.scen.Rout T3.NIH4.scen.Rout
@@ -101,18 +128,13 @@ T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid
 
 # hi represents hybrid with interventions. Under development.
 
-T1.NIH1.hi.Rout: hi.params.Rout T1.hi.params.Rout T1.%.scen.Rout hi5.autobug hi.R
+# T2.NIH1.hi.Rout: hi.params.R T2.NIH1.scen.Rout T2.NIH1.int.Rout hi.bugtmp hi.R
 
-.PRECIOUS: T1.%.hi.Rout
-T1.%.hi.Rout: hi.params.Rout T1.hi.params.Rout T1.%.scen.Rout hi5.autobug hi.R
+T2.NIH1.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.NIH1.hi.params.Rout T2.NIH1.scen.Rout T2.NIH1.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 .PRECIOUS: T2.%.hi.Rout
-T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout hi5.autobug hi.R
-	$(run-R)
-
-.PRECIOUS: T3.%.hi.Rout
-T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.scen.Rout hi5.autobug hi.R
+T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 ##################################################################
