@@ -16,8 +16,8 @@ preExp <- preMean/(lag+preMean)
 numobs <- length(obs)
 
 #creating the data/inits/constants -----
-data <- list (obs=obs
-              ,lag=lag
+data <- list (obs=obs)
+constants <-               list(lag=lag
               ,foieps=foieps
               ,pop=pop
               ,kappa=kappa
@@ -38,7 +38,7 @@ data <- list (obs=obs
               ,lagvec=lagvec)
 
 pre <- 1+obs[[1]]
-inits <- list(list(genPos = gpMean
+inits <- list(genPos = gpMean
                    , effRep = maxRep
                    , forecastobs = forecastobs
                    , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
@@ -49,18 +49,18 @@ inits <- list(list(genPos = gpMean
                    , R0=1
                    , genShape=1
                    , obsMean=c(obs,forecastobs)
-))
-# hybrid double forloop jags ----
-sim <- jags(model.file="mikehybrid.bug",
-            data=data, inits=inits, 
-            parameters = c("R0", "gen"
-                           , "repMean"
-                           , "effRep", "RRprop", "alpha"
-                           , "obs", "forecastobs"
-                           , "inc", "preInc", "foi"
-            ),
-            n.chains = 1, n.iter = 4000
 )
+# hybrid double forloop jags ----
+library(nimble)
 
-print(sim)
+source('nimhy.R')
+
+sim <- MCMCsuite(code=nimcode,
+                 data=data,
+                 inits=inits,
+                 constants=constants,
+                 MCMCs=c("jags","nimble"),
+                 monitor=c("forecastobs[1]"),
+                 makePlot=TRUE)
+
 
