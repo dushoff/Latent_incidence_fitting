@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T3.NIH2.incidence.Rout 
+target pngtarget pdftarget vtarget acrtarget: T3.NIH1.params.Rout 
 
 ##################################################################
 
@@ -142,13 +142,16 @@ T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rou
 %.est.Rout: %.Rout est.R
 	$(run-R)
 
+T3.NIH1.params.Rout: params.R
+%.params.Rout: %.hi.est.Rout params.R
+	$(run-R)
+
 %.peakWeek.Rout: %.hi.est.Rout peakWeek.R
 	$(run-R)
 
-T3.NIH2.incidence.Rout: incidence.R
+T3.NIH1.incidence.Rout: incidence.R
 %.incidence.Rout: %.hi.est.Rout incidence.R
 	$(run-R)
-
 
 ##################################################################
 
@@ -200,6 +203,9 @@ T23.NIH.%.pdf: T23.NIH1.%.Rout.pdf T23.NIH2.%.Rout.pdf T23.NIH3.%.Rout.pdf T23.N
 ##################################################################
 
 ## And combined .csv files
+
+T3.NIH.peakWeek.csv:
+T3.NIH.incidence.csv:
 
 T3.NIH.%.csv: T3.NIH1.%.Rout.csv T3.NIH2.%.Rout.csv T3.NIH3.%.Rout.csv T3.NIH4.%.Rout.csv
 	$(CAT)
