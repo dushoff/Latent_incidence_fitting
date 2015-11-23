@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T3.NIH1.hi.Rout 
+target pngtarget pdftarget vtarget acrtarget: T23.NIH1.compare.Rout 
 
 ##################################################################
 
@@ -161,9 +161,11 @@ T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rou
 T12.%.compare.Rout: T1.%.hybrid.est.Rout T2.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
+T23.NIH1.compare.Rout: compare.R
+
 ### Compare projections with new data
 .PRECIOUS: T23.%.compare.Rout
-T23.%.compare.Rout: T2.%.hybrid.est.Rout T3.%.scen.Rout forecastPlot.Rout compare.R
+T23.%.compare.Rout: T2.%.hi.est.Rout T3.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
 ######################################################################
