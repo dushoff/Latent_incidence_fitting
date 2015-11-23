@@ -56,4 +56,4 @@ sim <- stan(file="hybrid.stan",data=data,init=inits,
              iter=500,
              chains=1)
 
-print(sim2)
+print(sim)
