@@ -1,5 +1,7 @@
 ### Latent_incidence_fitting
 
+Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
+
 ### Hooks for the editor to set the default target
 current: target
 
