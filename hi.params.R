@@ -36,8 +36,8 @@ maxRep <- 0.75
 
 # Interventions
 BurShape <- 1
-BurMean <- 0.2
+BurMean <- 0.1
 ETUshape <- 1
 ETUmean <- 1
 TracShape <- 0.5
-TracMean <- 0.5
+TracMean <- 0.15

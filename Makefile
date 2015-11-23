@@ -142,6 +142,10 @@ T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rou
 %.est.Rout: %.Rout quantiles.R
 	$(run-R)
 
+T3.NIH2.tstats.Rout: tstats.R
+%.tstats.Rout: %.Rout tstats.R
+	$(run-R)
+
 ##################################################################
 
 ### Look at projections 
