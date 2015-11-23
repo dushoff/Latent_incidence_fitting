@@ -16,3 +16,4 @@ export ms = $(gitroot)/makestuff
 READONLY = chmod a-w $@
 PDFCAT = pdftk $(filter %.pdf, $^)  cat output $@
 PDFFRONT = pdftk $<  cat 1 output $@
+CAT = cat $^ > $@
