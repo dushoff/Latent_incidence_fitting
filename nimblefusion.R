@@ -59,8 +59,11 @@ sim <- MCMCsuite(code=nimcode,
                  data=data,
                  inits=inits,
                  constants=constants,
-                 MCMCs=c("jags","nimble"),
-                 monitor=c("forecastobs[1]"),
-                 makePlot=TRUE)
+                 stan_model="hybrid.stan",
+                 MCMCs=c("jags","stan"),
+                 monitor=c("forecastobs[1]","forecastobs[2]",
+                           "forecastobs[3]","forecastobs[4]"),
+                 makePlot=TRUE,
+                 niter=8000)
 
 
