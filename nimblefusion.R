@@ -63,6 +63,7 @@ sim <- MCMCsuite(code=nimcode,
                  MCMCs=c("jags","stan"),
                  monitor=c("forecastobs[1]","forecastobs[2]",
                            "forecastobs[3]","forecastobs[4]"),
+                 calculateEfficiency=TRUE,
                  makePlot=TRUE,
                  niter=8000)
 
