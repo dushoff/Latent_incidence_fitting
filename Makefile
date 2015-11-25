@@ -1,11 +1,11 @@
 ### Latent_incidence_fitting
 
-Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
+# Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
 
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T3.NIH.incidence.csv 
+target pngtarget pdftarget vtarget acrtarget: T34.NIH1.compare.Rout 
 
 ##################################################################
 
@@ -21,7 +21,6 @@ include stuff.mk
 Sources += todo.md notes.md
 
 ######################################################################
-
 
 ### Flow
 
@@ -77,7 +76,11 @@ T2.NIH%.scen.Rout: $(data)/NIHx_timepoint_2/NIH%/country_confirmed.csv scen.R
 T3.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
-update_data: T3.NIH1.scen.Rout T3.NIH2.scen.Rout T3.NIH3.scen.Rout T3.NIH4.scen.Rout
+.PRECIOUS: T4.NIH%.scen.Rout
+T4.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
+	$(run-R)
+
+update_data: T4.NIH1.scen.Rout T4.NIH2.scen.Rout T4.NIH3.scen.Rout T4.NIH4.scen.Rout
 
 ##################################################################
 
@@ -174,11 +177,14 @@ T3.NIH1.incidence.Rout: incidence.R
 T12.%.compare.Rout: T1.%.hybrid.est.Rout T2.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
-T23.NIH1.compare.Rout: compare.R
-
-### Compare projections with new data
 .PRECIOUS: T23.%.compare.Rout
 T23.%.compare.Rout: T2.%.hi.est.Rout T3.%.scen.Rout forecastPlot.Rout compare.R
+	$(run-R)
+
+T34.NIH1.compare.Rout:
+T34.NIH1.compare.pdf:
+.PRECIOUS: T34.%.compare.Rout
+T34.%.compare.Rout: T3.%.hi.est.Rout T4.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
 ######################################################################

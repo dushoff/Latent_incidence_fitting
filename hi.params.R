@@ -21,7 +21,7 @@ Rmean <- 1
 	
 gpMean <- 0.5
 gpShape <- 0.25
-	
+
 gsShape <- 0.1
 gsMean <- 1
 
