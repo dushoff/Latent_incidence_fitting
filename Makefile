@@ -181,8 +181,8 @@ T12.%.compare.Rout: T1.%.hybrid.est.Rout T2.%.scen.Rout forecastPlot.Rout compar
 T23.%.compare.Rout: T2.%.hi.est.Rout T3.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
-T34.NIH1.compare.Rout:
-T34.NIH1.compare.pdf:
+T34.NIH1.compare.Rout: compare.R
+T34.NIH.compare.pdf:
 .PRECIOUS: T34.%.compare.Rout
 T34.%.compare.Rout: T3.%.hi.est.Rout T4.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
@@ -206,6 +206,9 @@ T12.NIH.%.pdf: T12.NIH1.%.Rout.pdf T12.NIH2.%.Rout.pdf T12.NIH3.%.Rout.pdf T12.N
 	$(PDFCAT)
 
 T23.NIH.%.pdf: T23.NIH1.%.Rout.pdf T23.NIH2.%.Rout.pdf T23.NIH3.%.Rout.pdf T23.NIH4.%.Rout.pdf
+	$(PDFCAT)
+
+T34.NIH.%.pdf: T34.NIH1.%.Rout.pdf T34.NIH2.%.Rout.pdf T34.NIH3.%.Rout.pdf T34.NIH4.%.Rout.pdf
 	$(PDFCAT)
 
 ##################################################################
