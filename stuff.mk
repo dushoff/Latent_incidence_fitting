@@ -7,7 +7,27 @@
 msrepo = https://github.com/dushoff
 gitroot = ../
 Drop = ~/Dropbox/Latent_incidence_fitting/
+BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
+COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
+export HOSTNAME
 
+out = $(Drop)/$(COMMIT)_$(HOSTNAME)
+
+now:
+	@echo $(HOSTNAME)
+
+$(out):
+	mkdir $(out)
+
+curr = $(out)
+
+Makefile: $(out)
+	ln -fs $(out) out
+	ln -fs $(curr) curr
+
+# cb3682d
+
+ms = $(gitroot)/makestuff
 -include local.mk
 -include $(gitroot)/local.mk
 

@@ -5,7 +5,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T34.NIH1.compare.Rout 
+target pngtarget pdftarget vtarget acrtarget: now
 
 ##################################################################
 
@@ -132,8 +132,12 @@ T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rou
 	$(run-R)
 
 .PRECIOUS: T3.%.hi.Rout
-T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
+$(gout)/T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
 	$(run-R)
+
+$(out)/T3.%.hi.Rout: T3.%.hi.Rout
+	$(CP) $< $(out)
+	$(CP) T3.$*.hi.RData $(out)
 
 ##################################################################
 
@@ -144,7 +148,7 @@ T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rou
 
 ### Calculate estimation quantiles
 
-%.est.Rout: %.Rout est.R
+%.est.Rout: $(curr)/%.Rout est.R
 	$(run-R)
 
 T3.NIH1.params.Rout: params.R
