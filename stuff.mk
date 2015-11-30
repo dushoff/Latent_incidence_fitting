@@ -19,7 +19,7 @@ now:
 $(out):
 	mkdir $(out)
 
-curr = $(out)
+curr = /home/dushoff/Dropbox/Latent_incidence_fitting/8c774cdc_yushan//
 
 Makefile: $(out)
 	ln -fs $(out) out
