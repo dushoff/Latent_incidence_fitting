@@ -1,5 +1,4 @@
-forecastPlot <- function(finTime, topQuant){
-
+forecastPlot <- function(est, obs, finTime, topQuant){
 	t <- 1:finTime
 	est <- est[1:finTime, ]
 	obs <- obs[1:finTime]

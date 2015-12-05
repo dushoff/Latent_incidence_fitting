@@ -7,19 +7,10 @@
 msrepo = https://github.com/dushoff
 gitroot = ../
 Drop = ~/Dropbox/Latent_incidence_fitting/
-BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
-COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
-export HOSTNAME
 
-out = $(Drop)/$(COMMIT)_$(HOSTNAME)
-
-now:
-	@echo $(HOSTNAME)
 
 $(out):
 	mkdir $(out)
-
-curr = $(out)
 
 Makefile: $(out)
 	ln -fs $(out) out
@@ -32,6 +23,11 @@ ms = $(gitroot)/makestuff
 -include $(gitroot)/local.mk
 
 export ms = $(gitroot)/makestuff
+
+BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
+COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
+export HOSTNAME
+
 
 ### Stuff that belongs in makestuff, but we don't want to make people download t again now
 READONLY = chmod a-w $@

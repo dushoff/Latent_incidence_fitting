@@ -1,11 +1,11 @@
 ### Latent_incidence_fitting
 
-# Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
-
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: now
+target pngtarget pdftarget vtarget acrtarget: T34.NIH1.compare.Rout 
+
+# Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
 
 ##################################################################
 
@@ -13,6 +13,10 @@ target pngtarget pdftarget vtarget acrtarget: now
 
 Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
 include stuff.mk
+
+out = $(Drop)/$(COMMIT)_$(HOSTNAME)
+curr = $(out)
+curr = $(Drop)/$(COMMIT)_yushan
 
 ##################################################################
 
@@ -77,7 +81,7 @@ T3.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
 .PRECIOUS: T4.NIH%.scen.Rout
-T4.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
+T4.NIH%.scen.Rout: $(data)/NIHx_timepoint_4/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
 update_data: T4.NIH1.scen.Rout T4.NIH2.scen.Rout T4.NIH3.scen.Rout T4.NIH4.scen.Rout
@@ -95,6 +99,10 @@ T2.NIH%.int.Rout: $(data)/NIHx_timepoint_2/NIH%/interventions.Rout int.R
 
 .PRECIOUS: T3.NIH%.int.Rout
 T3.NIH%.int.Rout: $(data)/NIHx_timepoint_3/NIH%/interventions.Rout int.R
+	$(run-R)
+
+.PRECIOUS: T4.NIH%.int.Rout
+T3.NIH%.int.Rout: $(data)/NIHx_timepoint_4/NIH%/interventions.Rout int.R
 	$(run-R)
 
 ##################################################################
@@ -120,24 +128,28 @@ T2.%.hybrid.Rout: hybrid.params.Rout T2.hybrid.params.Rout T2.%.hybrid.params.Ro
 	$(run-R)
 
 .PRECIOUS: T3.%.hybrid.Rout
-T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid5.autobug hybrid.R
+T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
 ##################################################################
 
-# hi represents hybrid with interventions. Under development.
+# hi represents hybrid with interventions. 
 
 .PRECIOUS: T2.%.hi.Rout
 T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
-.PRECIOUS: T3.%.hi.Rout
-$(gout)/T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
+.PRECIOUS: $(out)/T3.%.hi.Rout
+$(out)/T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
-$(out)/T3.%.hi.Rout: T3.%.hi.Rout
+$(gout)/T3.%.hi.Rout: T3.%.hi.Rout
 	$(CP) $< $(out)
 	$(CP) T3.$*.hi.RData $(out)
+
+.PRECIOUS: $(out)/T4.%.hi.Rout
+$(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
+	$(run-R)
 
 ##################################################################
 
@@ -146,7 +158,10 @@ $(out)/T3.%.hi.Rout: T3.%.hi.Rout
 %.front.Rout.pdf: %.Rout.pdf
 	$(PDFFRONT)
 
-### Calculate estimation quantiles
+### Calculate estimation quantiles for output to Cecile
+
+now:
+	ls $(curr)
 
 %.est.Rout: $(curr)/%.Rout est.R
 	$(run-R)
@@ -186,6 +201,7 @@ T23.%.compare.Rout: T2.%.hi.est.Rout T3.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
 T34.NIH1.compare.Rout: compare.R
+
 T34.NIH.compare.pdf:
 .PRECIOUS: T34.%.compare.Rout
 T34.%.compare.Rout: T3.%.hi.est.Rout T4.%.scen.Rout forecastPlot.Rout compare.R
@@ -204,6 +220,9 @@ T2.NIH.%.pdf: T2.NIH1.%.Rout.pdf T2.NIH2.%.Rout.pdf T2.NIH3.%.Rout.pdf T2.NIH4.%
 	$(PDFCAT)
 
 T3.NIH.%.pdf: T3.NIH1.%.Rout.pdf T3.NIH2.%.Rout.pdf T3.NIH3.%.Rout.pdf T3.NIH4.%.Rout.pdf
+	$(PDFCAT)
+
+T4.NIH.%.pdf: T4.NIH1.%.Rout.pdf T4.NIH2.%.Rout.pdf T4.NIH3.%.Rout.pdf T3.NIH4.%.Rout.pdf
 	$(PDFCAT)
 
 T12.NIH.%.pdf: T12.NIH1.%.Rout.pdf T12.NIH2.%.Rout.pdf T12.NIH3.%.Rout.pdf T12.NIH4.%.Rout.pdf
