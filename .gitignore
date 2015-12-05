@@ -17,6 +17,7 @@ commit.txt
 *.Rlog
 *.r
 .Rhistory
+*.Rout.csv
 
 *.wrapR.*
 

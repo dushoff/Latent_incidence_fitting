@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T34.NIH1.compare.Rout 
+target pngtarget pdftarget vtarget acrtarget: T4test.NIH1.hi.Rout 
 
 # Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
 
@@ -14,9 +14,9 @@ target pngtarget pdftarget vtarget acrtarget: T34.NIH1.compare.Rout
 Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
 include stuff.mk
 
-out = $(Drop)/$(COMMIT)_$(HOSTNAME)
-curr = $(out)
+
 curr = $(Drop)/$(COMMIT)_yushan
+curr = $(out)
 
 ##################################################################
 
@@ -102,7 +102,7 @@ T3.NIH%.int.Rout: $(data)/NIHx_timepoint_3/NIH%/interventions.Rout int.R
 	$(run-R)
 
 .PRECIOUS: T4.NIH%.int.Rout
-T3.NIH%.int.Rout: $(data)/NIHx_timepoint_4/NIH%/interventions.Rout int.R
+T4.NIH%.int.Rout: $(data)/NIHx_timepoint_4/NIH%/interventions.Rout int.R
 	$(run-R)
 
 ##################################################################
@@ -135,6 +135,14 @@ T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid
 
 # hi represents hybrid with interventions. 
 
+#### The testing pathway has its own params file (for speed), and no weird Dropbox links
+
+T4test.NIH1.hi.Rout: test.params.R T4.NIH1.scen.Rout T4.NIH1.int.Rout hi.bugtmp hi.R
+.PRECIOUS: T4test.%.hi.Rout
+T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
+	$(run-R)
+
+#### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
 .PRECIOUS: T2.%.hi.Rout
 T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.%.int.Rout hi5.autobug hi.R
 	$(run-R)
@@ -142,10 +150,6 @@ T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rou
 .PRECIOUS: $(out)/T3.%.hi.Rout
 $(out)/T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
 	$(run-R)
-
-$(gout)/T3.%.hi.Rout: T3.%.hi.Rout
-	$(CP) $< $(out)
-	$(CP) T3.$*.hi.RData $(out)
 
 .PRECIOUS: $(out)/T4.%.hi.Rout
 $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
@@ -160,8 +164,7 @@ $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.s
 
 ### Calculate estimation quantiles for output to Cecile
 
-now:
-	ls $(curr)
+$(out)/%: $(out) 
 
 %.est.Rout: $(curr)/%.Rout est.R
 	$(run-R)
