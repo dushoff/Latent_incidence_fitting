@@ -143,16 +143,10 @@ T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.para
 	$(run-R)
 
 #### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
-.PRECIOUS: T2.%.hi.Rout
-T2.%.hi.Rout: hi.params.Rout T2.hi.params.Rout T2.%.hi.params.Rout T2.%.scen.Rout T2.%.int.Rout hi5.autobug hi.R
-	$(run-R)
-
-.PRECIOUS: $(out)/T3.%.hi.Rout
-$(out)/T3.%.hi.Rout: hi.params.Rout T3.hi.params.Rout T3.%.hi.params.Rout T3.%.scen.Rout T3.%.int.Rout hi5.autobug hi.R
-	$(run-R)
 
 .PRECIOUS: $(out)/T4.%.hi.Rout
 $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
+	$(MAKE) $(out)
 	$(run-R)
 
 ##################################################################
