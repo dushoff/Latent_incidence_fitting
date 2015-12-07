@@ -8,7 +8,7 @@ tstats <- as.data.frame(t(apply(m, 1, function(r){
 		finalSize = sum(obs) 
 		, peakSize = max(obs)
 		, peakWeek = which.max(obs)
-		, endWeek = min(which(obs==0))
+		, endWeek = suppressWarnings(min(which(obs==0)))
 	))
 })))
 names(tstats) <- c("finalSize", "peakSize", "peakWeek", "endWeek")
