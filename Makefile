@@ -145,8 +145,8 @@ T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.para
 
 #### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
 
-.PRECIOUS: T4.%.hi.Rout
-T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
+.PRECIOUS: $(out)/T4.%.hi.Rout
+$(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 ##################################################################
@@ -159,7 +159,7 @@ T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rou
 ### Calculate estimation quantiles for output to Cecile
 
 .PRECIOUS: %.est.Rout
-%.est.Rout: %.Rout est.R
+%.est.Rout: $(curr)/%.Rout est.R
 	$(run-R)
 
 T3.NIH1.params.Rout: params.R
@@ -224,7 +224,7 @@ T4.NIH.hip.pdf: T4.NIH1.hip.Rout.pdf T4.NIH2.hip.Rout.pdf T4.NIH3.hip.Rout.pdf T
 T4.NIH.%.pdf: T4.NIH1.%.Rout.pdf T4.NIH2.%.Rout.pdf T4.NIH3.%.Rout.pdf T4.NIH4.%.Rout.pdf
 	$(PDFCAT)
 
-T4.NIH.%.out: T4.NIH1.%.Rout T4.NIH2.%.Rout T4.NIH3.%.Rout T3.NIH4.%.Rout
+T4.NIH.%.out: T4.NIH1.%.Rout T4.NIH2.%.Rout T4.NIH3.%.Rout T4.NIH4.%.Rout
 	$(CAT)
 
 T12.NIH.%.pdf: T12.NIH1.%.Rout.pdf T12.NIH2.%.Rout.pdf T12.NIH3.%.Rout.pdf T12.NIH4.%.Rout.pdf

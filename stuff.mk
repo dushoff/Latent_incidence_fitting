@@ -9,7 +9,8 @@ gitroot = ../
 Drop = ~/Dropbox/Latent_incidence_fitting/
 
 now:
-	@echo $(COMMIT)
+	@echo $(out)
+	@echo $(curr)
 
 Makefile: $(out)
 
@@ -29,7 +30,6 @@ BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
 COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
 export HOSTNAME
 
-currhost = alishan
 out = $(Drop)/$(COMMIT)_$(HOSTNAME)
 curr = $(Drop)/$(COMMIT)_$(currhost)
 
