@@ -145,9 +145,8 @@ T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.para
 
 #### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
 
-.PRECIOUS: $(out)/T4.%.hi.Rout
-$(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
-	$(MAKE) $(out)
+.PRECIOUS: T4.%.hi.Rout
+T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 ##################################################################
@@ -159,9 +158,7 @@ $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.s
 
 ### Calculate estimation quantiles for output to Cecile
 
-$(out)/%: $(out) 
-
-%.est.Rout: $(curr)/%.Rout est.R
+%.est.Rout: %.Rout est.R
 	$(run-R)
 
 T3.NIH1.params.Rout: params.R
