@@ -3,9 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T4test.NIH1.hi.Rout 
+target pngtarget pdftarget vtarget acrtarget: T4test.NIH4.hi.Rout 
 
-target pngtarget pdftarget vtarget acrtarget: T34.NIH1.compare.Rout 
+target pngtarget pdftarget vtarget acrtarget: T4test.NIH4.hi.Rout 
 
 Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
 
@@ -15,7 +15,6 @@ Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.inciden
 
 Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
 include stuff.mk
-
 
 curr = $(Drop)/$(COMMIT)_yushan
 curr = $(out)
@@ -139,7 +138,7 @@ T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid
 
 #### The testing pathway has its own params file (for speed), and no weird Dropbox links
 
-T4test.NIH1.hi.Rout: test.params.R T4.NIH1.scen.Rout T4.NIH1.int.Rout hi.bugtmp hi.R
+T4test.NIH4.hi.Rout: 
 .PRECIOUS: T4test.%.hi.Rout
 T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
 	$(run-R)

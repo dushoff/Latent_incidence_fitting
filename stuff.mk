@@ -16,9 +16,6 @@ out = $(Drop)/$(COMMIT)_$(HOSTNAME)
 now:
 	@echo $(HOSTNAME)
 
-$(out):
-	mkdir $(out)
-
 curr = /home/dushoff/Dropbox/Latent_incidence_fitting/8c774cdc_yushan//
 
 Makefile: $(out)
