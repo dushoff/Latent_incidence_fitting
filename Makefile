@@ -18,6 +18,7 @@ include stuff.mk
 
 curr = $(Drop)/$(COMMIT)_yushan
 curr = $(out)
+outdir: $(out)
 
 ##################################################################
 

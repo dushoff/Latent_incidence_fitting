@@ -32,6 +32,8 @@ export HOSTNAME
 
 out = $(Drop)/$(COMMIT)_$(HOSTNAME)
 curr = $(Drop)/$(COMMIT)_$(currhost)
+$(out):
+	mkdir $@
 
 ######################################################################
 
