@@ -26,8 +26,8 @@ BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
 COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
 export HOSTNAME
 
-out = $(Drop)/$(COMMIT)_$(HOSTNAME)
-curr = $(out)
+out = $(Drop)/wtf
+curr = $(wildcard $(Drop)/*-n05)
 $(out):
 	mkdir $@
 
@@ -43,3 +43,4 @@ READONLY = chmod a-w $@
 PDFCAT = pdftk $(filter %.pdf, $^)  cat output $@
 PDFFRONT = pdftk $<  cat 1 output $@
 CAT = cat $^ > $@
+TGZ = tar czf $@ $^

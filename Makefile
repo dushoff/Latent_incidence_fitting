@@ -3,11 +3,14 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T4.NIH.hip.pdf 
+target pngtarget pdftarget vtarget acrtarget: Submission4.tgz 
 
-target pngtarget pdftarget vtarget acrtarget: T4.NIH.hip.pdf 
+target pngtarget pdftarget vtarget acrtarget: Submission4.tgz 
 
-Submission4: T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv
+Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv
+
+Submission4.tgz: $(Submission4)
+	$(TGZ)
 
 ##################################################################
 
