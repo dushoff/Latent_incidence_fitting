@@ -16,10 +16,6 @@ Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.inciden
 Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
 include stuff.mk
 
-curr = $(Drop)/$(COMMIT)_yushan
-curr = $(out)
-outdir: $(out)
-
 ##################################################################
 
 # Discussion
