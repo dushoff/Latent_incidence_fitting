@@ -7,7 +7,7 @@ target pngtarget pdftarget vtarget acrtarget: T4.NIH.hip.pdf
 
 target pngtarget pdftarget vtarget acrtarget: T4.NIH.hip.pdf 
 
-Submission3: T3.NIH.hi.pdf T3.NIH.project.pdf T3.NIH.peakWeek.csv T3.NIH.incidence.csv T3.NIH.params.csv
+Submission4: T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv
 
 ##################################################################
 
@@ -150,7 +150,7 @@ $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.s
 
 ### Front page of a fitting pdf
 
-%.front.Rout.pdf: %.Rout.pdf
+%.front.Rout.pdf: $(curr)/%.Rout.pdf
 	$(PDFFRONT)
 
 ### Calculate estimation quantiles for output to Cecile
@@ -237,11 +237,10 @@ T34.NIH.%.pdf: T34.NIH1.%.Rout.pdf T34.NIH2.%.Rout.pdf T34.NIH3.%.Rout.pdf T34.N
 
 ## And combined .csv files
 
-T3.NIH.peakWeek.csv:
-T3.NIH.incidence.csv:
-T3.NIH.params.csv:
-
 T3.NIH.%.csv: T3.NIH1.%.Rout.csv T3.NIH2.%.Rout.csv T3.NIH3.%.Rout.csv T3.NIH4.%.Rout.csv
+	$(CAT)
+
+T4.NIH.%.csv: T4.NIH1.%.Rout.csv T4.NIH2.%.Rout.csv T4.NIH4.%.Rout.csv T4.NIH4.%.Rout.csv
 	$(CAT)
 
 ### Traceplots
