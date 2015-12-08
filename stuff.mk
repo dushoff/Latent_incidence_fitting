@@ -27,9 +27,11 @@ COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
 export HOSTNAME
 
 out = $(Drop)/$(COMMIT)_$(HOSTNAME)
-curr = $(wildcard $(Drop)/*_yushan-*)
+curr = $(out)
 $(out):
 	mkdir $@
+
+outdir: $(out)
 
 now:
 	@echo $(curr)
