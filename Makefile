@@ -3,13 +3,18 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: Submission4.tgz 
+target pngtarget pdftarget vtarget acrtarget: Submission4.3.tgz 
 
-target pngtarget pdftarget vtarget acrtarget: Submission4.tgz 
+target pngtarget pdftarget vtarget acrtarget: Submission4.3.tgz 
 
-Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv
+Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv 
 
 Submission4.tgz: $(Submission4)
+	$(TGZ)
+
+Submission4.3 = T4.NIH3.low.peakWeek.Rout.csv T4.NIH3.low.incidence.Rout.csv T4.NIH3.low.params.Rout.csv
+
+Submission4.3.tgz: $(Submission4.3)
 	$(TGZ)
 
 ##################################################################
@@ -162,6 +167,14 @@ $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.s
 %.est.Rout: $(curr)/%.Rout est.R
 	$(run-R)
 
+.PRECIOUS: %.lowEst.Rout
+%.lowEst.Rout: $(curr)/%.Rout lowEst.R
+	$(run-R)
+
+.PRECIOUS: %.low.hi.est.Rout
+%.low.hi.est.Rout: %.hi.lowEst.Rout
+	$(run-R)
+
 T3.NIH1.params.Rout: params.R
 %.params.Rout: %.hi.est.Rout params.R
 	$(run-R)
@@ -243,7 +256,7 @@ T34.NIH.%.pdf: T34.NIH1.%.Rout.pdf T34.NIH2.%.Rout.pdf T34.NIH3.%.Rout.pdf T34.N
 T3.NIH.%.csv: T3.NIH1.%.Rout.csv T3.NIH2.%.Rout.csv T3.NIH3.%.Rout.csv T3.NIH4.%.Rout.csv
 	$(CAT)
 
-T4.NIH.%.csv: T4.NIH1.%.Rout.csv T4.NIH2.%.Rout.csv T4.NIH4.%.Rout.csv T4.NIH4.%.Rout.csv
+T4.NIH.%.csv: T4.NIH1.%.Rout.csv T4.NIH2.%.Rout.csv T4.NIH3.%.Rout.csv T4.NIH4.%.Rout.csv
 	$(CAT)
 
 ### Traceplots
