@@ -3,9 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T5test.NIH.hi.out 
+target pngtarget pdftarget vtarget acrtarget: T5test.NIH4.hi.Rout 
 
-target pngtarget pdftarget vtarget acrtarget: T5test.NIH.hi.out 
+target pngtarget pdftarget vtarget acrtarget: T5test.NIH4.hi.Rout 
 
 Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv 
 
@@ -157,12 +157,18 @@ T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.para
 	$(run-R)
 
 ### CURR
-T5test.NIH.hi.pdf: 
+# T5test.NIH4.hi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
+T5test.NIH4.hi.Rout: 
+
 .PRECIOUS: T5test.%.hi.Rout
 T5test.%.hi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 #### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
+
+.PRECIOUS: $(out)/T5.%.hi.Rout
+$(out)/T5.%.hi.Rout: hi.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
+	$(run-R)
 
 .PRECIOUS: $(out)/T4.%.hi.Rout
 $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
