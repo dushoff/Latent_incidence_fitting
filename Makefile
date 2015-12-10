@@ -3,9 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: Submission4.3.tgz 
+target pngtarget pdftarget vtarget acrtarget: T5test.NIH.hi.out 
 
-target pngtarget pdftarget vtarget acrtarget: Submission4.3.tgz 
+target pngtarget pdftarget vtarget acrtarget: T5test.NIH.hi.out 
 
 Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv 
 
@@ -91,7 +91,11 @@ T3.NIH%.scen.Rout: $(data)/NIHx_timepoint_3/NIH%/country_confirmed.csv scen.R
 T4.NIH%.scen.Rout: $(data)/NIHx_timepoint_4/NIH%/country_confirmed.csv scen.R
 	$(run-R)
 
-update_data: T4.NIH1.scen.Rout T4.NIH2.scen.Rout T4.NIH3.scen.Rout T4.NIH4.scen.Rout
+.PRECIOUS: T5.NIH%.scen.Rout
+T5.NIH%.scen.Rout: $(data)/NIHx_timepoint_5/NIH%/country_confirmed.csv scen.R
+	$(run-R)
+
+update_data: T5.NIH1.scen.Rout T5.NIH2.scen.Rout T5.NIH3.scen.Rout T5.NIH4.scen.Rout
 
 ##################################################################
 
@@ -110,6 +114,10 @@ T3.NIH%.int.Rout: $(data)/NIHx_timepoint_3/NIH%/interventions.Rout int.R
 
 .PRECIOUS: T4.NIH%.int.Rout
 T4.NIH%.int.Rout: $(data)/NIHx_timepoint_4/NIH%/interventions.Rout int.R
+	$(run-R)
+
+.PRECIOUS: T5.NIH%.int.Rout
+T5.NIH%.int.Rout: $(data)/NIHx_timepoint_5/NIH%/interventions.Rout int.R
 	$(run-R)
 
 ##################################################################
@@ -144,9 +152,14 @@ T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid
 
 #### The testing pathway has its own params file (for speed), and no weird Dropbox links
 
-T4test.NIH4.hi.Rout: 
 .PRECIOUS: T4test.%.hi.Rout
 T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
+	$(run-R)
+
+### CURR
+T5test.NIH.hi.pdf: 
+.PRECIOUS: T5test.%.hi.Rout
+T5test.%.hi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
 #### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
@@ -210,12 +223,16 @@ T12.%.compare.Rout: T1.%.hybrid.est.Rout T2.%.scen.Rout forecastPlot.Rout compar
 T23.%.compare.Rout: T2.%.hi.est.Rout T3.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
-T34.NIH1.compare.Rout: compare.R
-
-T34.NIH.compare.pdf:
 .PRECIOUS: T34.%.compare.Rout
 T34.%.compare.Rout: T3.%.hi.est.Rout T4.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
+
+.PRECIOUS: T45.%.compare.Rout
+T45.%.compare.Rout: T4.%.hi.est.Rout T5.%.scen.Rout forecastPlot.Rout compare.R
+	$(run-R)
+
+T45.NIH1.compare.Rout:
+T45.NIH.compare.pdf:
 
 ######################################################################
 
@@ -232,13 +249,16 @@ T2.NIH.%.pdf: T2.NIH1.%.Rout.pdf T2.NIH2.%.Rout.pdf T2.NIH3.%.Rout.pdf T2.NIH4.%
 T3.NIH.%.pdf: T3.NIH1.%.Rout.pdf T3.NIH2.%.Rout.pdf T3.NIH3.%.Rout.pdf T3.NIH4.%.Rout.pdf
 	$(PDFCAT)
 
-T4.NIH.hip.pdf: T4.NIH1.hip.Rout.pdf T4.NIH2.hip.Rout.pdf T4.NIH3.hip.Rout.pdf T4.NIH4.hip.Rout.pdf
-	$(PDFCAT)
-
 T4.NIH.%.pdf: T4.NIH1.%.Rout.pdf T4.NIH2.%.Rout.pdf T4.NIH3.%.Rout.pdf T4.NIH4.%.Rout.pdf
 	$(PDFCAT)
 
 T4.NIH.%.out: T4.NIH1.%.Rout T4.NIH2.%.Rout T4.NIH3.%.Rout T4.NIH4.%.Rout
+	$(CAT)
+
+T5.NIH.%.pdf: T5.NIH1.%.Rout.pdf T5.NIH2.%.Rout.pdf T5.NIH3.%.Rout.pdf T5.NIH4.%.Rout.pdf
+	$(PDFCAT)
+
+T5.NIH.%.out: T5.NIH1.%.Rout T5.NIH2.%.Rout T5.NIH3.%.Rout T5.NIH4.%.Rout
 	$(CAT)
 
 T12.NIH.%.pdf: T12.NIH1.%.Rout.pdf T12.NIH2.%.Rout.pdf T12.NIH3.%.Rout.pdf T12.NIH4.%.Rout.pdf
@@ -248,6 +268,9 @@ T23.NIH.%.pdf: T23.NIH1.%.Rout.pdf T23.NIH2.%.Rout.pdf T23.NIH3.%.Rout.pdf T23.N
 	$(PDFCAT)
 
 T34.NIH.%.pdf: T34.NIH1.%.Rout.pdf T34.NIH2.%.Rout.pdf T34.NIH3.%.Rout.pdf T34.NIH4.%.Rout.pdf
+	$(PDFCAT)
+
+T45.NIH.%.pdf: T45.NIH1.%.Rout.pdf T45.NIH2.%.Rout.pdf T45.NIH3.%.Rout.pdf T45.NIH4.%.Rout.pdf
 	$(PDFCAT)
 
 ##################################################################
