@@ -13,6 +13,9 @@ Makefile: $(out)
 # cb3682d
 
 ms = $(gitroot)/makestuff
+out = $(Drop)/$(COMMIT)_$(HOSTNAME)
+curr = $(out)
+
 -include local.mk
 -include $(gitroot)/local.mk
 
@@ -26,8 +29,6 @@ BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
 COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
 export HOSTNAME
 
-out = $(Drop)/$(COMMIT)_$(HOSTNAME)
-curr = $(out)
 $(out):
 	mkdir $@
 
