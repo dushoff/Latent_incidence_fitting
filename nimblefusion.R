@@ -17,7 +17,7 @@ numobs <- length(obs)
 
 #creating the data/inits/constants -----
 data <- list (obs=obs)
-constants <-               list(lag=lag
+constants <-  list(lag=lag
               ,foieps=foieps
               ,pop=pop
               ,kappa=kappa
