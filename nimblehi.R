@@ -83,5 +83,6 @@ mod <- nimbleModel(code=nimcode
   , inits = niminits
   , check = FALSE)
 
+cmod <- configureMCMC(mod,print=TRUE,)
 
 cmod <- configureMCMC(mod,print=TRUE)
