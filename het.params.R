@@ -1,5 +1,5 @@
 iterations <- 100
-iterations <- 50000
+iterations <- 5000
 
 # Reporting and effective population hyper-parameters
 repHmean <- 0.5
