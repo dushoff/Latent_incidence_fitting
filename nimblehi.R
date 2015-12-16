@@ -62,27 +62,29 @@ niminits <- list(genPos = gpMean
   , ETUEff = ETUshape
   , TracEff = TracShape
   , obsMean = obs
+  , preker = c(rep(0.5,5))
 )
 
 
 source("nimhi.R")
-
-sim <- MCMCsuite(code = nimcode
-  , data = nimdata
-  , inits = niminits
-  , constants = nimconstants
-  , MCMCs = c("jags","nimble")
-  , monitors = c("gen")
-  , calculateEfficiency = TRUE
-  , niter = 4000
-  , makePlot = TRUE)
+# 
+# sim <- MCMCsuite(code = nimcode
+#   , data = nimdata
+#   , inits = niminits
+#   , constants = nimconstants
+#   , MCMCs = c("jags","nimble")
+#   , monitors = c("gen")
+#   , calculateEfficiency = TRUE
+#   , niter = 4000
+#   , makePlot = TRUE)
 
 mod <- nimbleModel(code=nimcode
   , constants = nimconstants
   , data = nimdata
   , inits = niminits
   , check = FALSE)
-
-cmod <- configureMCMC(mod,print=TRUE,)
-
-cmod <- configureMCMC(mod,print=TRUE)
+mod[["preker"]]
+# 
+# cmod <- configureMCMC(mod,print=TRUE,)
+# 
+# cmod <- configureMCMC(mod,print=TRUE)

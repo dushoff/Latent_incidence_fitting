@@ -16,8 +16,9 @@ nimcode <- nimbleCode({
   genPos ~ dbeta(gpShape/(1-gpMean), gpShape/gpMean)
   genShape ~ dgamma(gsShape, gsShape/gsMean)
   
-  for (j in 1:lag){
-    preker[j] <- pow(j, genShape-1)*exp(-j/(genPos*lag))
+  for (j in 1:5){
+#    preker[j] <- pow(j, genShape-1)*exp(-j/(genPos*lag))
+    preker[j] <- 1
     ker[j] <- R0*preker[j]/sum(preker[1:5])
     preInc[j] ~ dexp(preExp)
   }
