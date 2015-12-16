@@ -22,7 +22,7 @@ nimdata <- list(obs=obs)
 
 nimconstants <- list(max=max
                      , lag=lag
-                     , lagvec = lagvec
+#                     , lagvec = lagvec
                      , pop = pop
                      , foieps = foieps
                      , kappa = kappa
@@ -36,6 +36,8 @@ nimconstants <- list(max=max
                      , hetShape = hetShape
                      , hetMean = hetMean
                      , shapeH = shapeH)
+#                      , S = c(rep(pre, lag+1), 1+obs)
+#                      , foi = obs)
 
 pre <- 1 + obs[[1]]
 niminits <- list(inc = c(rep(pre, lag), 1+obs)
@@ -48,8 +50,6 @@ niminits <- list(inc = c(rep(pre, lag), 1+obs)
     , S0 = round(0.5*pop)
     , repa = rep(1/max,max)
     , repb = rep(1/max,max)
-    , S = c(rep(pre, lag), 1+obs)
-    , foi = obs
     , inca = rep(1/max,max)
     , incb = rep(1/max,max)
 )
@@ -58,11 +58,12 @@ sim <- MCMCsuite(code = nimcode
                  , data = nimdata
                  , inits = niminits
                  , constants = nimconstants
-                 , MCMCs = c("jags","nimble")
-                 , monitors = c("R0")
+                 , MCMCs = c("jags","nimble","nimble_slice")
+                 , monitors = c("R0","gen","foi","inc","effProp")
                  , niter = 4000
                  , calculateEfficiency = TRUE
-                 , makePlot = TRUE
+                 , makePlot = FALSE
+                 , savePlot = FALSE
 )
 # 
 # mod <- nimbleModel(code = nimcode, data=nimdata, inits = niminits,
