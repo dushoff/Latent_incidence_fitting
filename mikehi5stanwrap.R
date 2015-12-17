@@ -7,5 +7,5 @@ load('T5.NIH4.hi.params.RData')
 load('T5.NIH4.scen.RData')
 load('T5.NIH4.int.RData')
 
-iterations=300
+iterations=8000
 source("mikehi5stan.R")

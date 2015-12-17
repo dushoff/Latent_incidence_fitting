@@ -58,7 +58,7 @@ inits <- list(list(genPos = gpMean
 # hybrid stan----
 sim <- stan(file="hi5.stan",data=data,init=inits,
             pars=c("forecastobs"),
-            iter=500,
+            iter=iterations,
             chains=1)
 
 print(sim)
