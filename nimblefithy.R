@@ -6,11 +6,11 @@ load('T3.NIH3.scen.RData')
 set.seed(seed)
 # forecast=4
 # if(forecast>0) forecastobs <- c(rep(1, forecast))
-
+obs <- head(obs,9)
 numobs <- length(obs)
 # forecastnum <- length(forecastobs)
 
-lag <- 5
+lag <- 2
 lagvec <- 1:lag
 effRepHa <- effRepHShape/(1-effRepHmean)
 effRepHb <- effRepHShape/effRepHmean
@@ -58,13 +58,13 @@ inits <- list(genPos = gpMean
 library(nimble)
 
 source('nimfithy.R')
-# 
+
 # sim <- MCMCsuite(code=nimcode,
 #                  data=data,
 #                  inits=inits,
 #                  constants=constants,
 #                  #                 stan_model="hybrid.stan",
-#                  MCMCs=c("jags","nimble"),
+#                  MCMCs=c("nimble"),
 #                  monitor=c("gen"),
 #                  calculateEfficiency=TRUE,
 #                  makePlot=TRUE,
@@ -78,12 +78,13 @@ mod <- nimbleModel(code=nimcode,
                    check = TRUE
                    )
 mod$getNodeNames()
-mod[["lifted_d1_over__oPrepShape_over_inc_oB5_plus_j_cB_cP[20]"]]
-mod$getVarNames()
-mod$repMean
-mod$preInc
+aa <- mod$getVarNames()
+for(i in 1:22){
+  print(mod[[aa[i]]])
+}
+
 #cmod <- compileNimble(mod) works. why?
 
-#cmod <- configureMCMC(mod)
+#cmod <- configureMCMC(mod,print=TRUE)
 
 
