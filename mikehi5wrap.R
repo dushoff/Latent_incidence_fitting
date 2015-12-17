@@ -7,7 +7,7 @@ load('T5.NIH4.hi.params.RData')
 load('T5.NIH4.scen.RData')
 load('T5.NIH4.int.RData')
 
-iterations=300
+iterations=4000
 input_files <- c("mikehi5.bug")
 source("mikehi5.R")
 
