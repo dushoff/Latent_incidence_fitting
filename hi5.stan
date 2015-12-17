@@ -90,7 +90,6 @@ for(j in 1:(lag+numobs)){
   S[j+1] <- foieps + S[j] - inc[j]/repMean;
 
 }
-
 # Observation period
 for (j in 1:numobs){
 	foi[j] <- (
@@ -113,7 +112,7 @@ for (j in 1:numobs){
 
 for(j in 1:forecast){
   
-  	foi[j] <- (
+  	foi[numobs+j] <- (
 			(ker[1]*inc[numobs+j+4] + ker[2]*inc[numobs+j+3] + ker[3]*inc[numobs+j+2] + ker[4]*inc[numobs+j+1] + ker[5]*inc[numobs+j+0])
 			* pow(S[numobs+lag+j]/S[1], 1+alpha)
 			* exp(-BurEff*Burial[numobs+j])
@@ -121,7 +120,6 @@ for(j in 1:forecast){
 			* exp(-TracEff*Tracing[numobs+j])
 			+ foieps
 		);
-
   preIncShape[numobs+j] <- (incShape*foi[numobs+j]/repMean)/(incShape+foi[numobs+j]/repMean);
   
 	preInc[numobs+lag+j] ~ gamma(preIncShape[numobs+j], preIncShape[numobs+j]/foi[numobs+j]);
