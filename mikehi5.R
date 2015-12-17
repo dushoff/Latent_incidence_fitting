@@ -58,7 +58,8 @@ sim <- jags(model.file=input_files[[1]],
                            , "obs", "forecastobs"
                            # , "inc", "preInc", "foi"
             ),
-            n.chains = length(mult), n.iter = iterations
+            n.chains = length(inits), n.iter = iterations, n.thin=2
 )
 
 print(sim)
+proc.time()

@@ -38,27 +38,53 @@ data <- with(interventions, list (
   , Tracing = Tracing, TracMean=TracMean, TracShape=TracShape
 ))
 
-pre <- 1+obs[[1]]
-inits <- list(list(genPos = gpMean
-                   , effRep = maxRep
-                   , forecastobs = forecastobs
-                   , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
-                   , repShape=shapeH
-                   , incShape=shapeH
-                   , alpha=hetShape
-                   , RRprop=0.5
-                   , R0=1
-                   , genShape=gsShape
-                   , obsMean=c(obs,forecastobs)
-                   , preker = c(rep(0.5,5))
-                   , BurEff = BurShape
-                   , ETUEff = ETUshape
-                   , TracEff = TracShape
-))
+
+inits <- lapply (mult, function(m){
+  pre <- 1+obs[[1]]
+  return(list(
+    forecastobs = forecastobs
+    , genPos = gpMean
+    , effRep = maxRep/m
+    , preInc = c(
+      rep(pre, lag)
+      , 1+obs,1+forecastobs 
+    )
+    , repShape=shapeH
+    , incShape=shapeH
+    , alpha=hetShape
+    , RRprop=0.5
+    , R0=1
+    , genShape=gsShape
+    , obsMean=c(obs,forecastobs)
+    , preker = c(rep(0.5,5))
+    , BurEff = BurShape
+    , ETUEff = ETUshape
+    , TracEff = TracShape
+  ))
+})
+
+# pre <- 1+obs[[1]]
+# inits <- list(list(genPos = gpMean
+#                    , effRep = maxRep
+#                    , forecastobs = forecastobs
+#                    , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
+#                    , repShape=shapeH
+#                    , incShape=shapeH
+#                    , alpha=hetShape
+#                    , RRprop=0.5
+#                    , R0=1
+#                    , genShape=gsShape
+#                    , obsMean=c(obs,forecastobs)
+#                    , preker = c(rep(0.5,5))
+#                    , BurEff = BurShape
+#                    , ETUEff = ETUshape
+#                    , TracEff = TracShape
+# ))
 # hybrid stan----
 sim <- stan(file="hi5.stan",data=data,init=inits,
-            pars=c("forecastobs"),
+            pars=c("forecastobs","R0","BurEff","ETUEff","TracEff"),
             iter=iterations,
-            chains=1)
+            chains=4,thin = 2)
 
 print(sim)
+proc.time()
