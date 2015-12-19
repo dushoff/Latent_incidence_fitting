@@ -1,4 +1,3 @@
-
 diffs <- est[, 4] - est[, 5]
 currWeek <- min(which(diffs<0))-1
 print(rownames(parest))

@@ -202,7 +202,7 @@ T3.NIH1.params.Rout: params.R
 %.peakWeek.Rout: %.hi.est.Rout peakWeek.R
 	$(run-R)
 
-T3.NIH1.incidence.Rout: incidence.R
+T4.NIH1.incidence.Rout: incidence.R
 %.incidence.Rout: %.hi.est.Rout incidence.R
 	$(run-R)
 
