@@ -63,7 +63,7 @@ inits <- lapply (mult, function(m){
 })
 
 sim <- stan(file="hi5.stan",data=data,init=inits,
-            pars=c("forecastobs","R0","BurEff","ETUEff","TracEff","gen"),
+            pars=c("forecastobs","R0","BurEff","ETUEff","TracEff"),
             iter=iterations,
             chains=length(mult),thin = 2)
 
