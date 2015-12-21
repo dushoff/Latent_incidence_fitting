@@ -5,9 +5,9 @@ int<lower=0> forecast; //number of forecasts
 int<lower=0> lag; //number of previous days we are using for kernel
 int lagvec[lag]; //lag vector 
 int<lower=0> pop; //population size
-int Burial[numobs + forecast];
-int ETU[numobs + forecast];
-int Tracing[numobs + forecast];
+real Burial[numobs + forecast];
+real ETU[numobs + forecast];
+real Tracing[numobs + forecast];
 real<lower=0> foieps; //non-zero hack eps for foi 
 real<lower=0> kappa; //constant parameter for inc
 real<lower=0> effRepHa; // beta parameter for effRep
