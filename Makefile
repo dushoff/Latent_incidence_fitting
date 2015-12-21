@@ -284,6 +284,12 @@ T45.NIH.%.pdf: T45.NIH1.%.Rout.pdf T45.NIH2.%.Rout.pdf T45.NIH3.%.Rout.pdf T45.N
 T5test.%.stanhi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.stan mikehi5stan.R
 	$(run-R)
 
+
+%.stanest.Rout: %.Rout stanest.R
+	$(run-R)
+	
+%.stanhip.Rout: %.stanhi.stanest.Rout forecastPlot.Rout project.R
+	$(run-R)
 ########
 
 ## And combined .csv files
