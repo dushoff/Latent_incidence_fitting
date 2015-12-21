@@ -1,6 +1,5 @@
 require(rstan)
 set.seed(seed)
-forecast=4
 if(forecast>0) forecastobs <- c(rep(1, forecast))
 
 numobs <- length(obs)
@@ -63,28 +62,10 @@ inits <- lapply (mult, function(m){
   ))
 })
 
-# pre <- 1+obs[[1]]
-# inits <- list(list(genPos = gpMean
-#                    , effRep = maxRep
-#                    , forecastobs = forecastobs
-#                    , preInc = c(rep(pre, lag), 1+obs,2+forecastobs)
-#                    , repShape=shapeH
-#                    , incShape=shapeH
-#                    , alpha=hetShape
-#                    , RRprop=0.5
-#                    , R0=1
-#                    , genShape=gsShape
-#                    , obsMean=c(obs,forecastobs)
-#                    , preker = c(rep(0.5,5))
-#                    , BurEff = BurShape
-#                    , ETUEff = ETUshape
-#                    , TracEff = TracShape
-# ))
-# hybrid stan----
 sim <- stan(file="hi5.stan",data=data,init=inits,
-            pars=c("forecastobs","R0","BurEff","ETUEff","TracEff"),
+            pars=c("forecastobs","R0","BurEff","ETUEff","TracEff","gen"),
             iter=iterations,
-            chains=4,thin = 2)
+            chains=length(mult),thin = 2)
 
 print(sim)
 proc.time()
