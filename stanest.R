@@ -22,6 +22,8 @@ allest <- t(apply(m, 2, function(v){quantile(v, probs = q)}))
 oc <- grepl("forecastobs", row.names(allest))
 
 est <- allest[oc, ]
+obsdat <- matrix(rep(obs,each=5),ncol=5,nrow=length(obs),byrow=TRUE)
+est<-rbind(obsdat,est)
 parest <- allest[!oc, ]
 
 print(parest)
