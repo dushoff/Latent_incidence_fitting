@@ -1,1 +1,1 @@
-iterations <- 4000
+iterations <- 250

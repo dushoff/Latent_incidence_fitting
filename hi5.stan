@@ -32,7 +32,7 @@ real<lower=0> TracMean;
 
 parameters{
 real<lower=0,upper=1> genPos;
-real<lower=0> forecastobs[forecast];
+#real<lower=0> forecastobs[forecast];
 real<lower=0> genShape;
 real<lower=0,upper=1> effRep;
 real<lower=0> preInc[forecast+lag+numobs];
@@ -129,7 +129,7 @@ for(j in 1:forecast){
   S[lag+numobs+j+1] <- foieps + S[numobs+lag+j] - inc[j+lag+numobs]/repMean;
   
   obsMean[numobs+j] ~ gamma(repShape, repShape/inc[numobs+lag+j]);
-  forecastobs[j] ~ gamma(obsMean[numobs+j],1);
+#  forecastobs[j] ~ gamma(obsMean[numobs+j],1);
   
 }
 
