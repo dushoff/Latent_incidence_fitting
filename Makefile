@@ -3,9 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T5test.NIH4.hi.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIHsets 
 
-target pngtarget pdftarget vtarget acrtarget: T5test.NIH4.hi.Rout 
+target pngtarget pdftarget vtarget acrtarget: NIHsets 
 
 Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv 
 
