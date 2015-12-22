@@ -1,7 +1,6 @@
 require("R2jags")
 
 set.seed(seed)
-forecast <- 5
 if(forecast>0) forecastobs <- rep(1, forecast)
 
 # Parse the lag out of the model file name (clunky)

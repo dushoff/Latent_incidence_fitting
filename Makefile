@@ -290,6 +290,18 @@ T5test.%.stanhi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.
 	
 %.stanhip.Rout: %.stanhi.stanest.Rout forecastPlot.Rout project.R
 	$(run-R)
+
+
+T5test.%.mikehi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout mikehi5.bug mikehi5.R
+	$(run-R)
+
+%.mikeest.Rout: %.Rout est.R
+	$(run-R)
+	
+%.hip.Rout: %.mikeest.Rout forecastPlot.Rout project.R
+	$(run-R)
+
+
 ########
 
 ## And combined .csv files
