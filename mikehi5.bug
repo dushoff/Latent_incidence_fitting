@@ -81,7 +81,7 @@ model{
 		
 				# Observation process
 		obsMean[max+j] ~ dgamma(repShape, repShape/inc[max+lag+j])
-		forecastobs[j] ~ dpois(obsMean[max+j])
+		forecastobs[j] ~ dgamma(obsMean[max+j],1)
 
 	}
 
