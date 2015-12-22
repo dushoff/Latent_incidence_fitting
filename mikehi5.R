@@ -10,7 +10,7 @@ interventions <- interventions[1:length(c(obs,forecastobs)), ]
 data <- with(interventions, list (
   obs = obs
   , max = length(obs)
-  , forecast = forecast
+#  , forecast = forecast
   , lag = lag
   , lagvec = 1:lag
   , pop = pop
@@ -36,12 +36,12 @@ data <- with(interventions, list (
 inits <- lapply (mult, function(m){
   pre <- 1+obs[[1]]
   return(list(
-    forecastobs = forecastobs
-    , genPos = gpMean
+#    forecastobs = forecastobs
+     genPos = gpMean
     , effRep = maxRep/m
     , preInc = c(
       rep(pre, lag)
-      , 1+obs,1+forecastobs 
+      , 1+obs
     )
   ))
 })
@@ -49,12 +49,13 @@ inits <- lapply (mult, function(m){
 
 sim <- jags(model.file=input_files[[1]],
             data=data, inits=inits, 
-            parameters = c("R0", "gen"
-                           # , "ker"
-                           , "effRep", "alpha"
-                           # , "repMean", "RRprop"
+            parameters = c(#"R0", "gen"
+                            "ker", "alpha"
+                           # "effRep", 
+                            , "repMean"#, "RRprop"
                            , "ETUEff", "BurEff", "TracEff"
-                           , "obs", "forecastobs"
+                           , "inc", "S", "incShape", "repShape"
+                           #, "obs", "forecastobs"
                            # , "inc", "preInc", "foi"
             ),
             n.chains = length(inits), n.iter = iterations, n.thin=2

@@ -57,33 +57,6 @@ model{
 		inc[j] <- foieps + S[j]*repMean*
 			(1 - pow(1+preInc[j]/(S[j]*repMean*kappa), -kappa)) 
 	}		
-		
-	
-  for(j in 1:forecast){
-  	S[lag+max+j+1] <- foieps + S[lag+max+j] - inc[lag+max+j]/repMean
-
-		inc[lag+max+j] <- foieps + S[lag+max+j]*repMean*
-			(1 - pow(1+preInc[lag+max+j]/(S[lag+max+j]*repMean*kappa), -kappa)) 
-	
-    foi[max+j] <- (
-			(ker[1]*inc[max+j+4] + ker[2]*inc[max+j+3] + ker[3]*inc[max+j+2] + 
-			ker[4]*inc[max+j+1] + ker[5]         
-			*inc[max+j+0])
-			* pow(S[max+lag+j]/S[1], 1+alpha)
-			* exp(-BurEff*Burial[max+j])
-			* exp(-ETUEff*ETU[max+j]/inc[max+j])
-			* exp(-TracEff*Tracing[max+j])
-			+ foieps
-		)
-		
-		preIncShape[max+j] <- (incShape*foi[max+j]/repMean)/(incShape+foi[max+j]/repMean)
-		preInc[max+lag+j] ~ dgamma(preIncShape[max+j], preIncShape[max+j]/foi[max+j])
-		
-				# Observation process
-		obsMean[max+j] ~ dgamma(repShape, repShape/inc[max+lag+j])
-		forecastobs[j] ~ dgamma(obsMean[max+j],1)
-
-	}
 
 	# Interventions
 	BurEff ~ dgamma(BurShape, BurShape/BurMean)
