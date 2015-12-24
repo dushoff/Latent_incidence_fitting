@@ -7,17 +7,6 @@ target pngtarget pdftarget vtarget acrtarget: NIHsets
 
 target pngtarget pdftarget vtarget acrtarget: NIHsets 
 
-Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv 
-
-Submission4.tgz: $(Submission4)
-	$(TGZ)
-
-Archive += Submission4.3.tgz
-Submission4.3 = T4.NIH3.low.peakWeek.Rout.csv T4.NIH3.low.incidence.Rout.csv T4.NIH3.low.params.Rout.csv
-
-Submission4.3.tgz: $(Submission4.3)
-	$(TGZ)
-
 ##################################################################
 
 # make files
