@@ -15,7 +15,7 @@ Makefile: $(out)
 ms = $(gitroot)/makestuff
 out = $(Drop)/$(COMMIT)_$(HOSTNAME)
 curr = $(out)
-curr = $(Drop)/319ecc01_yushan-n04/
+curr = $(wildcard $(Drop)/*-n04)
 
 -include local.mk
 -include $(gitroot)/local.mk

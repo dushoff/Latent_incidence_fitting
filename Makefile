@@ -33,12 +33,16 @@ Sources += todo.md notes.md
 
 ######################################################################
 
-### Flow
+# Files to put in github
 
 Sources += $(wildcard *.R)
 Sources += $(wildcard *.pl)
 Sources += $(wildcard *.bug)
 Sources += $(wildcard *.bugtmp)
+
+##################################################################
+
+# Make .bug scripts with generation lags from templates
 
 .PRECIOUS: base%.autobug
 base%.autobug: base.bugtmp lagchain.pl
@@ -64,10 +68,14 @@ hi%.autobug: hi.bugtmp lagchain.pl
 	$(PUSHSTAR)
 	$(READONLY)
 
+
+##################################################################
+
+### Pre-process data files from contest organizers
+
 data = $(gitroot)/techtex-ebola/Data
 
 ### Don't like this rule, but I need a uniform name because of make bugs!
-### This rule doesn't work on yushan either!, save the target files in the techtex repo
 
 NIHsets: T1.NIH1.scen.Rout T1.NIH2.scen.Rout T1.NIH3.scen.Rout T1.NIH4.scen.Rout T2.NIH1.scen.Rout T2.NIH2.scen.Rout T2.NIH3.scen.Rout T2.NIH4.scen.Rout
 
@@ -99,7 +107,7 @@ update_data: T5.NIH1.scen.Rout T5.NIH2.scen.Rout T5.NIH3.scen.Rout T5.NIH4.scen.
 
 ##################################################################
 
-# Silly rules whose real purpose is to copy the intervention from techtex
+# Process the intervention files that we make
 
 $(data)/%/interventions.Rout:
 	cd $(data) && $(MAKE) $*/interventions.Rout
@@ -122,7 +130,11 @@ T5.NIH%.int.Rout: $(data)/NIHx_timepoint_5/NIH%/interventions.Rout int.R
 
 ##################################################################
 
-# het takes the R <- R0 S^α approach to changing transmission through time. Doesn't mix well, and it's kind of a backwater.
+# The first attempt at fitting
+# Uses effective population sizes and phenomenological heterogeneity
+# ie., R <- R0 S^α approach.
+# Doesn't mix well, we think because changing reporting ratio throws
+# all the other parameters "off the cliff"
 
 .PRECIOUS: %.het.Rout
 %.het.Rout: het.params.Rout %.het.params.Rout %.scen.Rout het5.autobug het.R
@@ -130,9 +142,9 @@ T5.NIH%.int.Rout: $(data)/NIHx_timepoint_5/NIH%/interventions.Rout int.R
 
 ##################################################################
 
-T2.NIH2.hybrid.Rout: hybrid.params.R hybrid.bugtmp hybrid.R
-
-# hybrid is meant to be like het, but more fittable, by using continuous latent variables and an artificial scale
+# The second attempt
+# hybrid is like het, but mixes better
+# It uses continuous latent variables to put values on the same scale
 
 .PRECIOUS: T1.%.hybrid.Rout
 T1.%.hybrid.Rout: hybrid.params.Rout T1.hybrid.params.Rout T1.%.scen.Rout hybrid5.autobug hybrid.R
@@ -150,21 +162,18 @@ T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid
 
 # hi represents hybrid with interventions. 
 
-#### The testing pathway has its own params file (for speed), and no weird Dropbox links
+# We now have a "testing" pathway with shorter runs done locally
+# and a somewhat complicated main pathway that involves setting a variable called curr to point a local machine at fits done on a server.
 
 .PRECIOUS: T4test.%.hi.Rout
 T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
-### CURR
-# T5test.NIH4.hi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
-T5test.NIH4.hi.Rout: 
-
 .PRECIOUS: T5test.%.hi.Rout
 T5test.%.hi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
 	$(run-R)
 
-#### The production pathway separates input and output directories so we can play locally with stuff produced elsewhere
+#### The main pathway sends outputs to Dropbox folders labelled by commit and hostname. These are not well managed yet.
 
 .PRECIOUS: $(out)/T5.%.hi.Rout
 $(out)/T5.%.hi.Rout: hi.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.autobug hi.R
@@ -176,17 +185,35 @@ $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.s
 
 ##################################################################
 
+### Parameter files are optional
+### We have a lot of places to add parameters in the make rules; most of them are not actually used
+
+%.params.R:
+	touch $@
+
+##################################################################
+
+### Traceplots
+
+%.traceplot.Rout: %.Rout traceplot.R
+	$(run-R)
+
 ### Front page of a fitting pdf
 
 %.front.Rout.pdf: $(curr)/%.Rout.pdf
 	$(PDFFRONT)
 
-### Calculate estimation quantiles for output to Cecile
+##################################################################
+
+### Calculate estimation quantiles for output to NIH
+
+T5.NIH.hi.est.out: est.R
 
 .PRECIOUS: %.est.Rout
 %.est.Rout: $(curr)/%.Rout est.R
 	$(run-R)
 
+### Special low estimates for T4, based on DC's observations
 .PRECIOUS: %.lowEst.Rout
 %.lowEst.Rout: $(curr)/%.Rout lowEst.R
 	$(run-R)
@@ -195,14 +222,19 @@ $(out)/T4.%.hi.Rout: hi.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.s
 %.low.hi.est.Rout: %.hi.lowEst.Rout
 	$(run-R)
 
-T3.NIH1.params.Rout: params.R
-%.params.Rout: %.hi.est.Rout params.R
+# Report parameters in spreadsheet-friendly form
+.PRECIOUS: %.paramEsts.Rout
+%.paramEsts.Rout: %.hi.est.Rout paramEsts.R
 	$(run-R)
 
+# Report peak incidence estimates spreadsheet-friendly form
+# Also added lastWeek to this, because of spreadsheet layout
+.PRECIOUS: %.peakWeek.Rout
 %.peakWeek.Rout: %.hi.est.Rout peakWeek.R
 	$(run-R)
 
-T4.NIH1.incidence.Rout: incidence.R
+# Report incidence estimates in spreadsheet-friendly form
+.PRECIOUS: %.incidence.Rout
 %.incidence.Rout: %.hi.est.Rout incidence.R
 	$(run-R)
 
@@ -315,15 +347,31 @@ T3.NIH.%.csv: T3.NIH1.%.Rout.csv T3.NIH2.%.Rout.csv T3.NIH3.%.Rout.csv T3.NIH4.%
 T4.NIH.%.csv: T4.NIH1.%.Rout.csv T4.NIH2.%.Rout.csv T4.NIH3.%.Rout.csv T4.NIH4.%.Rout.csv
 	$(CAT)
 
-### Traceplots
+.PRECIOUS: T5.NIH.%.csv
+T5.NIH.%.csv: T5.NIH1.%.Rout.csv T5.NIH2.%.Rout.csv T5.NIH3.%.Rout.csv T5.NIH4.%.Rout.csv
+	$(CAT)
 
-%.traceplot.Rout: %.Rout traceplot.R
-	$(run-R)
+##################################################################
 
-### Parameter files are optional
+# Submission archive (started very late; mostly this track wasn't used for submissions anyway)
 
-%.params.R:
-	touch $@
+Submission4 = T4.NIH.hip.pdf T4.NIH.peakWeek.csv T4.NIH.incidence.csv T4.NIH.params.csv 
+
+Submission4.tgz: $(Submission4)
+	$(TGZ)
+
+Archive += Submission4.3.tgz
+Submission4.3 = T4.NIH3.low.peakWeek.Rout.csv T4.NIH3.low.incidence.Rout.csv T4.NIH3.low.params.Rout.csv
+
+Submission4.3.tgz: $(Submission4.3)
+	$(TGZ)
+
+Archive += Submission5.tgz
+# /home/dushoff/git/Latent_incidence_fitting/T5.NIH.peakWeek.csv
+Submission5 = T5.NIH.hip.pdf T5.NIH.peakWeek.csv T5.NIH.incidence.csv T5.NIH.paramEsts.csv 
+
+Submission5.tgz: $(Submission5)
+	$(TGZ)
 
 ### Makestuff
 

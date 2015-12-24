@@ -1,3 +1,5 @@
+
+# This is probably the only thing that's changed from est, so this is bad design
 q <- c(0.05, 0.15, 0.35, 0.6, 0.95)
 
 m <- sim$BUGSoutput$sims.matrix

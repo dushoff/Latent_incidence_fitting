@@ -52,7 +52,7 @@ sim <- jags(model.file=input_files[[1]],
 	parameters = c("R0", "gen"
 		# , "ker"
 		, "effRep", "alpha"
-		# , "repMean", "RRprop"
+		, "repMean", "RRprop"
 		, "ETUEff", "BurEff", "TracEff"
 		, "obs"
 		# , "inc", "preInc", "foi"
