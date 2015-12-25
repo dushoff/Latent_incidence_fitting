@@ -40,7 +40,7 @@ simforecasting <- function(ker, inc0, S0, S_last, alpha, BurEff,
 
 for(i in 1:length(bb[[1]])){
   ff[i,]<-simforecasting(ker=bb$ker[i,],
-                                 inc0=bb$inc[i,(ncol(bb$inc)-4):ncrol(bb$inc)],
+                                 inc0=bb$inc[i,(ncol(bb$inc)-4):ncol(bb$inc)],
                                  S0=bb$S[i,1],
                                  S_last=bb$S[i,41],
                                  alpha=bb$alpha[i],
