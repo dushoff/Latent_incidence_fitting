@@ -59,32 +59,32 @@ library(nimble)
 
 source('nimfithy.R')
 
-# sim <- MCMCsuite(code=nimcode,
-#                  data=data,
-#                  inits=inits,
-#                  constants=constants,
-#                  #                 stan_model="hybrid.stan",
-#                  MCMCs=c("nimble"),
-#                  monitor=c("gen"),
-#                  calculateEfficiency=TRUE,
-#                  makePlot=TRUE,
-#                  niter=4000)
-
-
-mod <- nimbleModel(code=nimcode,
-                   constants = constants,
-                   data = data,
-                   inits = inits,
-                   check = TRUE
-                   )
-mod$getNodeNames()
-aa <- mod$getVarNames()
-for(i in 1:22){
-  print(mod[[aa[i]]])
-}
-
-#cmod <- compileNimble(mod) works. why?
-
-#cmod <- configureMCMC(mod,print=TRUE)
-
+sim <- MCMCsuite(code=nimcode,
+                 data=data,
+                 inits=inits,
+                 constants=constants,
+                 #                 stan_model="hybrid.stan",
+                 MCMCs=c("jags"),
+                 monitor=c("gen"),
+                 calculateEfficiency=TRUE,
+                 makePlot=TRUE,
+                 niter=2000)
+# 
+# 
+# mod <- nimbleModel(code=nimcode,
+#                    constants = constants,
+#                    data = data,
+#                    inits = inits,
+#                    check = TRUE
+#                    )
+# mod$getNodeNames()
+# aa <- mod$getVarNames()
+# for(i in 1:22){
+#   print(mod[[aa[i]]])
+# }
+# 
+# #cmod <- compileNimble(mod) works. why?
+# 
+# #cmod <- configureMCMC(mod,print=TRUE)
+# 
 

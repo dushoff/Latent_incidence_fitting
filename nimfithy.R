@@ -46,11 +46,11 @@ nimcode <- nimbleCode({
     ## (cannot exceed S[lag+j]*repMean)
     
     preIncShape[j] <- (incShape*foi[j]/repMean)/(incShape+foi[j]/repMean)
-    preInc[lag+j] ~ dgamma(preIncShape[j], scale=foi[j]/preIncShape[j])
+    preInc[lag+j] ~ dgamma(preIncShape[j],foi[j]/preIncShape[j])
     
     # Observation process
 
-    obsMean[j] ~ dgamma(repShape, rate=inc[lag+j]/repShape)
+    obsMean[j] ~ dgamma(repShape, repShape/inc[lag+j])
     obs[j] ~ dpois(obsMean[j])
     
     S[lag+j+1] <- foieps + S[lag+j] - inc[lag+j]/repMean
