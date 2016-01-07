@@ -1,0 +1,56 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\newcommand{\Ro}{\mathcal{R}_0}
+
+\title{Latent model}
+\author{Dushoff, Li, Champredon}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+
+
+\section{Background}
+
+Given an observed incidence curve, we want to estimate epidemiological parameters and forecast future incidence.
+
+\section{Epidemiological Model}
+
+The model is based on the renewal equation, with heterogeneity and intervention added.
+
+Incidence at time $I_t$ is supposed to be defined as:
+
+\begin{equation}
+I_t = S_t^{1+\alpha}\, \Ro \left( \sum_{j=1}^{\ell} e^{-A_t} g(j) I_{t-j}   + \epsilon \right)
+\label{eq:renewal}
+\end{equation}
+with $\alpha\geq 0$ a parameter modelling contact heterogeneity, $A_t$ representing all interventions effectiveness at time $t$, $S_t$ the proportion of the effective population composed of susceptible individuals, $g$ the generation interval distribution and parameter $\ell$ the maximum value of the generation interval. Parameter $\epsilon$ is a small quantity that helps with numerical convergence of the MCMC.
+
+It is assumed that 
+$$ g(t) = \frac{1}{G}\, t^{g_1 -1} e^{-\frac{t}{\ell\, g_2}}$$
+with $g_1$ and $g_2$ two shape parameters and $G=\int g$ the normalizing constant.
+
+The depletion of susceptibles is taken into account simply by subtracting incidence at each time step:
+\begin{equation}
+S_{t+1} = S_t - I_t + \epsilon
+\end{equation}
+
+
+
+An observation process is modelled with a Poisson distribution.
+
+
+NOTE DC: there is something I don't understand with \texttt{preInc}:
+$$I_k = \epsilon + S_k \rho (1-(1+\frac{preInc_k}{S\rho\kappa})^{-\kappa})$$
+where $\rho$ is the mean reporting rate
+
+\end{document}  
