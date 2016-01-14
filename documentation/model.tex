@@ -33,7 +33,7 @@ Incidence at time $I_t$ is supposed to be defined as:
 I_t = S_t^{1+\alpha}\, \Ro \left( \sum_{j=1}^{\ell} e^{-A_t} g(j) I_{t-j}   + \epsilon \right)
 \label{eq:renewal}
 \end{equation}
-with $\alpha\geq 0$ a parameter modelling contact heterogeneity, $A_t$ representing all interventions effectiveness at time $t$, $S_t$ the proportion of the effective population composed of susceptible individuals, $g$ the generation interval distribution and parameter $\ell$ the maximum value of the generation interval. Parameter $\epsilon$ is a small quantity that helps with numerical convergence of the MCMC.
+with $\alpha\geq 0$ a parameter modelling contact heterogeneity, $A_t$ representing all interventions effectiveness at time $t$, $S_t$ the proportion of the effective population composed of susceptible individuals, $g$ the generation interval distribution and parameter $\ell$ the maximum value of the generation interval. Parameter $\epsilon$ is a small quantity that helps with numerical convergence of the MCMC (but more tests should be performed because $\epsilon$ appears several times in the code).
 
 It is assumed that 
 $$ g(t) = \frac{1}{G}\, t^{g_1 -1} e^{-\frac{t}{\ell\, g_2}}$$
@@ -44,13 +44,12 @@ The depletion of susceptibles is taken into account simply by subtracting incide
 S_{t+1} = S_t - I_t + \epsilon
 \end{equation}
 
-
-
 An observation process is modelled with a Poisson distribution.
 
-
-NOTE DC: there is something I don't understand with \texttt{preInc}:
+Because incidence can be larger than the susceptible population, a pre-incidence is first calculated and then capped with a smooth function (parameterized with $\kappa$) the following way:
 $$I_k = \epsilon + S_k \rho (1-(1+\frac{preInc_k}{S\rho\kappa})^{-\kappa})$$
-where $\rho$ is the mean reporting rate
+where $\rho$ is the mean reporting rate.
+
+[[To continue...]]
 
 \end{document}  
