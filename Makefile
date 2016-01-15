@@ -371,6 +371,6 @@ Makefile: start.makestuff
 -include $(ms)/visual.mk
 
 # -include $(ms)/wrapR.mk
--include $(ms)/newlatex.mk
+# -include $(ms)/oldlatex.mk
 -include $(ms)/perl.def
 -include $(ms)/wrapR.mk
