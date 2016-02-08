@@ -3,9 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: NIHsets 
+target pngtarget pdftarget vtarget acrtarget: T45.NIH.compare.pdf 
 
-target pngtarget pdftarget vtarget acrtarget: NIHsets 
+target pngtarget pdftarget vtarget acrtarget: T45.NIH.compare.pdf 
 
 ##################################################################
 
@@ -13,6 +13,7 @@ target pngtarget pdftarget vtarget acrtarget: NIHsets
 
 Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
 include stuff.mk
+-include $(ms)/os.mk
 
 ##################################################################
 
@@ -144,6 +145,10 @@ T2.%.hybrid.Rout: hybrid.params.Rout T2.hybrid.params.Rout T2.%.hybrid.params.Ro
 	$(run-R)
 
 .PRECIOUS: T3.%.hybrid.Rout
+T3.%.hybrid.Rout: hybrid.params.Rout T3.hybrid.params.Rout T3.%.scen.Rout hybrid5.autobug hybrid.R
+	$(run-R)
+
+.PRECIOUS: T4.%.hybrid.Rout
 T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid5.autobug hybrid.R
 	$(run-R)
 
