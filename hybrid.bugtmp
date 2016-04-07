@@ -33,6 +33,7 @@ model{
 
 		## inc is really "shadow" incidence:
 		##  the expected number reported _given_ the true incidence
+		## (rho*I(t))
 		## preInc is calculated first to make sure inc is not too big
 		## (cannot exceed S[lag+j]*repMean)
 
