@@ -14,8 +14,8 @@ Makefile: $(out)
 
 ms = $(gitroot)/makestuff
 out = $(Drop)/$(COMMIT)_$(HOSTNAME)
-curr = $(out)
 curr = $(wildcard $(Drop)/*-n04)
+curr = $(out)
 
 -include local.mk
 -include $(gitroot)/local.mk
@@ -34,9 +34,6 @@ $(out):
 	mkdir $@
 
 outdir: $(out)
-
-now:
-	ls $(curr)
 
 ######################################################################
 

@@ -3,9 +3,9 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: T45.NIH.compare.pdf 
+target pngtarget pdftarget vtarget acrtarget: T45.NIH1.compare.Rout 
 
-target pngtarget pdftarget vtarget acrtarget: T45.NIH.compare.pdf 
+target pngtarget pdftarget vtarget acrtarget: T45.NIH1.compare.Rout 
 
 ##################################################################
 
@@ -264,6 +264,7 @@ T45.%.compare.Rout: T4.%.hi.est.Rout T5.%.scen.Rout forecastPlot.Rout compare.R
 	$(run-R)
 
 T45.NIH1.compare.Rout:
+
 T45.NIH.compare.pdf:
 
 ######################################################################
@@ -310,13 +311,11 @@ T45.NIH.%.pdf: T45.NIH1.%.Rout.pdf T45.NIH2.%.Rout.pdf T45.NIH3.%.Rout.pdf T45.N
 T5test.%.stanhi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout hi5.stan mikehi5stan.R
 	$(run-R)
 
-
 %.stanest.Rout: %.Rout stanest.R
 	$(run-R)
 	
 %.stanhip.Rout: %.stanhi.stanest.Rout forecastPlot.Rout project.R
 	$(run-R)
-
 
 T5test.%.mikehi.Rout: hi.params.Rout test.params.Rout T5.hi.params.Rout T5.%.hi.params.Rout T5.%.scen.Rout T5.%.int.Rout mikehi5.bug mikehi5.R
 	$(run-R)
