@@ -154,10 +154,26 @@ T4.%.hybrid.Rout: hybrid.params.Rout T4.hybrid.params.Rout T4.%.scen.Rout hybrid
 
 ##################################################################
 
-# hi represents hybrid with interventions. 
-
 # We now have a "testing" pathway with shorter runs done locally
 # and a somewhat complicated main pathway that involves setting a variable called curr to point a local machine at fits done on a server.
+
+BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
+COMMIT = $(shell cat .git/refs/heads/$(BRANCH) | perl -npE 's/(.{8}).*/$$1/;')
+export HOSTNAME
+
+out = $(Drop)/$(COMMIT)_$(HOSTNAME)
+
+Makefile: $(out)
+outdir: $(out)
+$(out):
+	mkdir $@
+
+curr = $(wildcard $(Drop)/*-n04)
+curr = $(out)
+
+######################################################################
+
+# hi represents hybrid with interventions. 
 
 .PRECIOUS: T4test.%.hi.Rout
 T4test.%.hi.Rout: hi.params.Rout test.params.Rout T4.hi.params.Rout T4.%.hi.params.Rout T4.%.scen.Rout T4.%.int.Rout hi5.autobug hi.R
