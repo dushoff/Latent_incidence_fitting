@@ -1,9 +1,5 @@
 ### Latent_incidence_fitting
-
-### Hooks for the editor to set the default target
-current: target
-
-target pngtarget pdftarget vtarget acrtarget: T45.NIH1.compare.Rout 
+### Original Ebola challenge directory
 
 target pngtarget pdftarget vtarget acrtarget: T45.NIH1.compare.Rout 
 
