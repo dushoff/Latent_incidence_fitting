@@ -1,15 +1,48 @@
 ### Latent_incidence_fitting
 ### Original Ebola challenge directory
 
-target pngtarget pdftarget vtarget acrtarget: T45.NIH1.compare.Rout 
+## Target
+current: target
+-include target.mk
 
 ##################################################################
 
 # make files
-
-Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
-include stuff.mk
+Sources = Makefile README.md LICENSE.md
+Ignore += .gitignore 
 -include $(ms)/os.mk
+
+######################################################################
+
+Drop = ~/Dropbox/Latent_incidence_fitting/
+
+## Makestuff setup
+Sources += Makefile 
+msrepo = https://github.com/dushoff
+ms = makestuff
+-include $(ms)/os.mk
+
+Ignore += $(ms)
+Makefile: $(ms)/Makefile
+$(ms)/Makefile:
+	git clone $(msrepo)/$(ms)
+	ls $@
+
+######################################################################
+
+### Makestuff rules
+
+-include $(ms)/git.mk
+-include $(ms)/visual.mk
+
+######################################################################
+
+
+### Stuff that belongs in makestuff, but we don't want to make people download t again now
+READONLY = chmod a-w $@
+PDFCAT = pdftk $(filter %.pdf, $^)  cat output $@
+PDFFRONT = pdftk $<  cat 1 output $@
+CAT = cat $^ > $@
 
 ##################################################################
 
