@@ -406,7 +406,7 @@ Submission5.tgz: $(Submission5)
 ### Makestuff
 
 ## Change this name to download a new version of the makestuff directory
-Makefile: start.makestuff
+Makefile: 
 
 -include $(ms)/git.mk
 -include $(ms)/visual.mk
